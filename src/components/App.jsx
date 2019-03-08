@@ -22,17 +22,22 @@ import routes from '../routes';
 
 export default function (props) {
 
+  const params = {
+    themeDark: false,
+    mainColor: 'red'
+  };
+
   // Framework7 parameters here
   const f7params = {
-    id: 'io.framework7.testapp', // App bundle ID
-    name: 'Framework7', // App name
-    theme: 'auto', // Automatic theme detection
+    id: 'ru.bhapp.marshal', // App bundle ID
+    name: 'marshal', // App name
+    theme: 'md', // Automatic theme detection
     // App routes
     routes,
   };
 
   return (
-    <App params={f7params}>
+    <App params={f7params} themeDark={params.themeDark} color={params.mainColor}>
       {/* Statusbar */}
       <Statusbar />
 
