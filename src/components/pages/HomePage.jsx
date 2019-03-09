@@ -2,99 +2,66 @@ import React from 'react';
 import {
     Page,
     Navbar,
+    NavRight,
+    // NavLeft,
+    NavTitle,
     Link,
     Toolbar,
     Block,
     BlockTitle,
-    List,
-    ListItem,
-    Row,
-    Col,
-    Button,
     Tabs,
     Tab
 } from 'framework7-react';
 
+import RequestsPage from './RequestsPage';
+
 export default () => (
-  <Page>
-      <Navbar
-          title="Маршал"
-          backLink="Back"
-          color="white"
-          textColor="white"
-          bgColor="red"
-      />
-    <Toolbar
-        bottom
-        tabbar
-        labels
-    >
-        <Link tabLink="#tab-1" tabLinkActive text="Главная"  iconMd="material:store"/>
-        <Link tabLink="#tab-2" text="Магазины"  iconMd="material:store"/>
-        <Link tabLink="#tab-3" text="Заказы" iconMd="material:today"/>
-        <Link tabLink="#tab-4" text="Личный кабинет" iconMd="material:file_upload"/>
-    </Toolbar>
+    <Page hideToolbarOnScroll pageContent={false}>
+        <Navbar
+            color="white"
+            textColor="white"
+            bgColor="red"
+        >
+            {/*<NavLeft backLink="Back"/>*/}
+            <NavTitle>Маршал</NavTitle>
+            <NavRight>
+                <Link iconMd="material:account_circle" loginScreenOpen="#login-screen"/>
+            </NavRight>
+        </Navbar>
+        <Toolbar
+            bottom
+            tabbar
+            labels
+        >
+            <Link tabLink="#requests" tabLinkActive text="Заявки" iconMd="material:important_devices"/>
+            <Link tabLink="#stores" text="Магазины" iconMd="material:store"/>
+            <Link tabLink="#cars" text="Автомобили" iconMd="material:directions_car"/>
+            <Link tabLink="#settings" text="Настройки" iconMd="material:settings"/>
+        </Toolbar>
 
-      <Tabs>
-          <Tab id="tab-1" className="page-content" tabActive>
-              <Block>
-                  <p>Tab 1 content</p>
-                  ...
-              </Block>
-          </Tab>
-          <Tab id="tab-2" className="page-content">
-              <Block>
-                  <p>Tab 2 content</p>
-                  ...
-              </Block>
-          </Tab>
-          <Tab id="tab-3" className="page-content">
-              <Block>
-                  <p>Tab 3 content</p>
-                  ...
-              </Block>
-          </Tab>
-          <Tab id="tab-4" className="page-content">
-              <Block>
-                  <p>Tab 4 content</p>
-                  ...
-              </Block>
-          </Tab>
-      </Tabs>
-
-    <Block strong>
-      <p>Here is your blank Framework7 app. Let's see what we have here.</p>
-    </Block>
-    <BlockTitle>Navigation</BlockTitle>
-    <List>
-      <ListItem link="/about/" title="About"/>
-      <ListItem link="/form/" title="Form"/>
-    </List>
-    <BlockTitle>Modals</BlockTitle>
-    <Block strong>
-      <Row>
-        <Col width="50">
-          <Button fill raised popupOpen="#popup">Popup</Button>
-        </Col>
-        <Col width="50">
-          <Button fill raised loginScreenOpen="#login-screen">Login Screen</Button>
-        </Col>
-      </Row>
-    </Block>
-    <BlockTitle>Panels</BlockTitle>
-    <Block strong>
-      <Row>
-        <Col width="50">
-          <Button fill raised panelOpen="left">Left Panel</Button>
-        </Col>
-        <Col width="50">
-          <Button fill raised panelOpen="right">Right Panel</Button>
-        </Col>
-      </Row>
-    </Block>
-    <List>
-      <ListItem link="/dynamic-route/blog/45/post/125/?foo=bar#about" title="Dynamic Route"></ListItem>
-      <ListItem link="/load-something-that-doesnt-exist/" title="Default Route (404)"></ListItem>
-    </List>
-  </Page>
+        <Tabs animated>
+            <Tab id="requests" className="page-content" tabActive>
+                <BlockTitle>Заявки</BlockTitle>
+                <RequestsPage/>
+            </Tab>
+            <Tab id="stores" className="page-content">
+                <Block>
+                    <p>Tab 2 content</p>
+                    ...
+                </Block>
+            </Tab>
+            <Tab id="cars" className="page-content">
+                <Block>
+                    <p>Tab 3 content</p>
+                    ...
+                </Block>
+            </Tab>
+            <Tab id="settings" className="page-content">
+                <Block>
+                    <p>Tab 4 content</p>
+                    ...
+                </Block>
+            </Tab>
+        </Tabs>
+    </Page>
 );

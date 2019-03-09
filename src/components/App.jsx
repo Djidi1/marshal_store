@@ -14,7 +14,7 @@ import {
   LoginScreenTitle,
   List,
   ListInput,
-  ListButton,
+  Button,
   BlockFooter
 } from 'framework7-react';
 
@@ -72,13 +72,13 @@ export default function (props) {
       <LoginScreen id="login-screen">
         <View>
           <Page loginScreen>
-            <LoginScreenTitle>Login</LoginScreenTitle>
+            <LoginScreenTitle>Войти</LoginScreenTitle>
             <List form>
               <ListInput
-                label="Username"
+                label="Email"
                 name="username"
-                placeholder="Username"
-                type="text"
+                placeholder="Email"
+                type="email"
               />
               <ListInput
                 label="Password"
@@ -86,11 +86,16 @@ export default function (props) {
                 placeholder="Password"
                 type="password"
               />
+
+                <BlockFooter>
+                    <Button fill loginScreenClose>Войти</Button>
+                </BlockFooter>
             </List>
+
             <List>
-              <ListButton title="Sign In" loginScreenClose></ListButton>
-              <BlockFooter>
-                <p>Click Sign In to close Login Screen</p>
+                <BlockFooter>
+                  <p><Link>Зарегистрироваться</Link></p>
+                  <p>Для восстановления пароля нажмите <Link>ссылку</Link></p>
               </BlockFooter>
             </List>
           </Page>

@@ -1,1 +1,5 @@
 /* Your app styles here */
+
+i.icon.status-icon {
+    vertical-align: bottom;
+}
