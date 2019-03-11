@@ -23,10 +23,13 @@ export default class extends React.Component {
     render() {
         return (
             <div>
-                <List mediaList>
+                <List
+                    mediaList
+                    className={"no-margin"}
+                >
                     <ListItem
                         swipeout
-                        link="requests/request/1/"
+                        link="requests/1/"
                         after="17:14 08.03.2018"
                         subtitle="Предложений: 10"
                         text="Необходимо подобрать тормозные колодки на автомобиль такой-то марки такого-то года выпуска."
@@ -51,7 +54,7 @@ export default class extends React.Component {
                     </ListItem>
                     <ListItem
                         swipeout
-                        link="requests/request/2/"
+                        link="requests/2/"
                         after="17:14 08.03.2018"
                         subtitle="Предложений: 7"
                         text="Требуется комплект запчастей для прохождения ТО-3 на автомобиле таком-то такого-то года выпуска. Пробег 40 000 км."

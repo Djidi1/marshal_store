@@ -8,7 +8,6 @@ import {
     Link,
     Toolbar,
     Block,
-    BlockTitle,
     Tabs,
     Tab
 } from 'framework7-react';
@@ -41,7 +40,6 @@ export default () => (
 
         <Tabs animated>
             <Tab id="requests" className="page-content" tabActive>
-                <BlockTitle>Заявки</BlockTitle>
                 <RequestsPage/>
             </Tab>
             <Tab id="stores" className="page-content">
