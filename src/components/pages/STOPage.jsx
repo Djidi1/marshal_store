@@ -5,8 +5,6 @@ import {
     SwipeoutActions,
     SwipeoutButton,
     Icon,
-    Navbar,
-    Page
 } from 'framework7-react';
 
 export default class extends React.Component {
@@ -20,15 +18,8 @@ export default class extends React.Component {
 
     render() {
         return (
-            <Page>
-                <Navbar
-                    color="white"
-                    textColor="white"
-                    bgColor="main"
-                    title="Мои автомобили"
-                    backLink="Back"
-                >
-                </Navbar>
+            <div>
+                <h1>СТО</h1>
                 <List
                     mediaList
                     className={"no-margin"}
@@ -36,11 +27,11 @@ export default class extends React.Component {
                     <ListItem
                         swipeout
                         after="17:14 08.03.2018"
-                        subtitle="VIN: 0000000000000"
-                        text="Пробег: 40 000 км"
+                        subtitle="Колодки, масла, колеса"
+                        text="Автозапчасти для всех марок."
                     >
                         <span slot="title">
-                            <Icon className={"status-icon"} material="directions_car" color="blue"/> BMW X5
+                            <Icon className={"status-icon"} material="store" color="blue"/> 1000 запчастей
                         </span>
                         <SwipeoutActions left>
                             <SwipeoutButton color="blue" onClick={this.forward.bind(this)}>
@@ -51,11 +42,11 @@ export default class extends React.Component {
                     <ListItem
                         swipeout
                         after="17:14 08.03.2018"
-                        subtitle="VIN: 0000000000000"
-                        text="Пробег: 10 000 км"
+                        subtitle="В наличии и на заказ"
+                        text="Автозапчасти для BMW."
                     >
                         <span slot="title">
-                            <Icon className={"status-icon"} material="directions_car" color="blue"/> Mercedes 600
+                            <Icon className={"status-icon"} material="store" color="blue"/> Все для BMW
                         </span>
                         <SwipeoutActions left>
                             <SwipeoutButton color="blue" onClick={this.forward.bind(this)}>
@@ -64,7 +55,7 @@ export default class extends React.Component {
                         </SwipeoutActions>
                     </ListItem>
                 </List>
-            </Page>
+            </div>
         );
     }
 };

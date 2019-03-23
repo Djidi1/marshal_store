@@ -119,7 +119,7 @@ export default class extends React.Component {
                 <Navbar
                     color="white"
                     textColor="white"
-                    bgColor="red"
+                    bgColor="main"
                     backLink="Back"
                     title="Переписка по заявке"/>
 

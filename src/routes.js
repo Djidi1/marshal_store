@@ -9,7 +9,9 @@ import NewRequestPage from "./components/pages/NewRequestPage";
 import ResponsesPage from "./components/pages/ResponsesPage";
 import ResponsePage from "./components/pages/ResponsePage";
 import ChatPage from "./components/pages/ChatPage";
+import CarsPage from "./components/pages/CarsPage";
 import StoresList from "./components/pages/StoresList";
+import LoginPage from "./components/pages/LoginPage";
 
 export default [
     {
@@ -33,8 +35,16 @@ export default [
         component: FormPage,
     },
     {
+        path: '/login/',
+        component: LoginPage,
+    },
+    {
         path: '/messages/',
         component: ChatPage,
+    },
+    {
+        path: '/cars/',
+        component: CarsPage,
     },
     {
         path: '/dynamic-route/blog/:blogId/post/:postId/',

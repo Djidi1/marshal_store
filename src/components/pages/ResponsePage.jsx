@@ -19,7 +19,7 @@ export default class ResponsePage extends Component {
                 <Navbar
                     color="white"
                     textColor="white"
-                    bgColor="red"
+                    bgColor="main"
                     title="Предложение"
                     backLink="Back"
                 >

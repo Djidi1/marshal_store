@@ -8,9 +8,9 @@ import Framework7React from 'framework7-react';
 import App from './components/App.jsx';
 
 // Framework7 styles
+import './css/app.css';
 import 'framework7/css/framework7.bundle.css';
 import './css/icons.css';
-import './css/app.css';
 
 // Init Framework7-React plugin
 Framework7.use(Framework7React);

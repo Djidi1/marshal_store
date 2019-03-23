@@ -10,12 +10,6 @@ import {
   NavRight,
   Link,
   Block,
-  LoginScreen,
-  LoginScreenTitle,
-  List,
-  ListInput,
-  Button,
-  BlockFooter
 } from 'framework7-react';
 
 import routes from '../routes';
@@ -68,39 +62,6 @@ export default function (props) {
         </View>
       </Popup>
 
-      {/* Login Screen */}
-      <LoginScreen id="login-screen">
-        <View>
-          <Page loginScreen>
-            <LoginScreenTitle>Войти</LoginScreenTitle>
-            <List form>
-              <ListInput
-                label="Email"
-                name="username"
-                placeholder="Email"
-                type="email"
-              />
-              <ListInput
-                label="Password"
-                name="password"
-                placeholder="Password"
-                type="password"
-              />
-
-                <BlockFooter>
-                    <Button fill loginScreenClose>Войти</Button>
-                </BlockFooter>
-            </List>
-
-            <List>
-                <BlockFooter>
-                  <p><Link>Зарегистрироваться</Link></p>
-                  <p>Для восстановления пароля нажмите <Link>ссылку</Link></p>
-              </BlockFooter>
-            </List>
-          </Page>
-        </View>
-      </LoginScreen>
     </App>
   );
 };

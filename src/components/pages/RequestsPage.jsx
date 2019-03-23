@@ -4,7 +4,6 @@ import {
     ListItem,
     SwipeoutActions,
     SwipeoutButton,
-    Fab,
     Icon,
 } from 'framework7-react';
 
@@ -79,14 +78,6 @@ export default class extends React.Component {
                         </SwipeoutActions>
                     </ListItem>
                 </List>
-                <Fab
-                    href="open_request/0/"
-                    position="right-bottom"
-                    slot="fixed"
-                    color="blue"
-                >
-                    <Icon ios="f7:add" md="material:add"/>
-                </Fab>
             </div>
         );
     }

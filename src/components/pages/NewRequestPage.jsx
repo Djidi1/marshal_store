@@ -23,7 +23,7 @@ export default class NewRequestPage extends Component {
                 <Navbar
                     color="white"
                     textColor="white"
-                    bgColor="red"
+                    bgColor="main"
                     title={this.$f7route.params.reqId > 0 ? "Редактировать заявку" : "Новая заявка"}
                     backLink="Back"
                 >

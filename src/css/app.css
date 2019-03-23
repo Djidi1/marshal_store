@@ -1,7 +1,17 @@
 /* Your app styles here */
 * {
     --f7-subnavbar-height: 120px;
+    --f7-color-red: #cb2128;
+    --f7-color-red-rgb: 203, 33, 40;
+    --f7-color-red-shade: #c32128;
+    --f7-color-red-tint: #d32128;
+    --f7-theme-color-bg-color: #cb2128;
+    --f7-theme-color: #cb2128;
+    --f7-bars-link-color: #ffffff;
+
 }
+
+/*cb2128 */
 
 .search-bar.subnavbar {
     height: auto;
@@ -26,4 +36,9 @@ i.icon.status-icon {
 
 h1 {
     padding: 0 14px;
+}
+
+
+.btn-new-request{
+    bottom: 8px !important;
 }
