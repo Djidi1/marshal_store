@@ -2,9 +2,6 @@ import React from 'react';
 import {
     Page,
     Navbar,
-    NavRight,
-    // NavLeft,
-    NavTitle,
     Link,
     Toolbar,
     Tabs,
