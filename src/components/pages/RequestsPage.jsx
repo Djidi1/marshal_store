@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from "react-redux";
 import {
     List,
     ListItem,
@@ -7,28 +8,10 @@ import {
     Icon,
 } from 'framework7-react';
 
-export default class extends React.Component {
+class RequestsPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            requests: [
-                {
-                    id: 1,
-                    category: "Колодки",
-                    text: "Необходимо подобрать тормозные колодки на автомобиль такой-то марки такого-то года выпуска.",
-                    answers: "10",
-                    status: "access_time",
-                    date: new Date(),
-                },
-                {
-                    id: 2,
-                    category: "TO-3",
-                    text: "Требуется комплект запчастей для прохождения ТО-3 на автомобиле таком-то такого-то года выпуска. Пробег 40 000 км.",
-                    answers: "8",
-                    status: "block",
-                    date: new Date(),
-                },
-            ]
         };
     }
 
@@ -43,7 +26,7 @@ export default class extends React.Component {
     }
 
     render() {
-        const {requests} = this.state;
+        const {requests} = this.props;
 
         return (
             <div>
@@ -87,3 +70,12 @@ export default class extends React.Component {
         );
     }
 };
+
+
+const mapStateToProps = store => {
+    return {
+        requests: store.requests,
+    }
+}
+
+export default connect(mapStateToProps)(RequestsPage)

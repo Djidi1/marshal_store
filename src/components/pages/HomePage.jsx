@@ -16,9 +16,7 @@ import SettingsPage from './SettingsPage';
 import STOPage from './STOPage';
 
 
-
-
-export default class extends React.Component {
+class HomePage extends React.Component {
 
     new_request(reqId) {
         const app = this.$f7;
@@ -79,3 +77,5 @@ export default class extends React.Component {
         )
     }
 };
+
+export default (HomePage)
