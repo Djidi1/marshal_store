@@ -1,21 +1,22 @@
-const axios = require('axios');
+import {axios} from './init'
 
 
-export class auth {
+export class authorisation {
 
-    login = (...args) => {
+    login = async (...args) => {
         // const {login, password} = args;
         console.log(args);
-        axios.post('https://marshal.bh-app.ru/api/login', {
-            email: 'test@test.ru',
-            password: '12345',
+        const url = '/login';
+
+        const payload = {
+            email: args[0],
+            password: args[1],
             application: 'marshal'
-        })
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        };
+        try {
+            return await axios.post(url, payload);
+        } catch (error) {
+            return error.response;
+        }
     }
 }
