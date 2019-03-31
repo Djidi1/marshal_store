@@ -9,33 +9,46 @@ import {
     LoginScreenTitle
 } from 'framework7-react';
 
-export default () => (
-    <Page loginScreen>
-        <LoginScreenTitle>Войти</LoginScreenTitle>
-        <List form>
-            <ListInput
-                label="Email"
-                name="username"
-                placeholder="Email"
-                type="email"
-            />
-            <ListInput
-                label="Password"
-                name="password"
-                placeholder="Password"
-                type="password"
-            />
+import {auth} from '../../axios/login'
 
-            <BlockFooter>
-                <Button fill href={"/"}>Войти</Button>
-            </BlockFooter>
-        </List>
+class LoginPage extends React.Component {
 
-        <List>
-            <BlockFooter>
-                <p><Link>Зарегистрироваться</Link></p>
-                <p>Для восстановления пароля нажмите <Link>ссылку</Link></p>
-            </BlockFooter>
-        </List>
-    </Page>
-);
+    authentication() {
+        const test = new auth();
+        test.login('login', 'password');
+    }
+    render() {
+        return (
+            <Page loginScreen>
+                <LoginScreenTitle>Войти</LoginScreenTitle>
+                <List form>
+                    <ListInput
+                        label="Email"
+                        name="username"
+                        placeholder="Email"
+                        type="email"
+                    />
+                    <ListInput
+                        label="Password"
+                        name="password"
+                        placeholder="Password"
+                        type="password"
+                    />
+
+                    <BlockFooter>
+                        <Button fill onClick={()=>this.authentication()}>Войти</Button>
+                    </BlockFooter>
+                </List>
+
+                <List>
+                    <BlockFooter>
+                        <p><Link>Зарегистрироваться</Link></p>
+                        <p>Для восстановления пароля нажмите <Link>ссылку</Link></p>
+                    </BlockFooter>
+                </List>
+            </Page>
+        )
+    }
+}
+
+export default (LoginPage)
