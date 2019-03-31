@@ -12,6 +12,9 @@
 }
 
 /*cb2128 */
+i.icon.marshal-icon {
+    background: url('../images/icon.svg');
+}
 
 .search-bar.subnavbar {
     height: auto;

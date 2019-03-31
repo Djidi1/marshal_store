@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from "react-redux";
 import {
     Page,
     List,
@@ -10,6 +11,7 @@ import {
 } from 'framework7-react';
 
 import { authorisation } from '../../axios/login'
+import { handleLogin } from '../../actions/UserActions'
 
 class LoginPage extends React.Component {
     constructor(props) {
@@ -21,17 +23,17 @@ class LoginPage extends React.Component {
     }
 
     authError = this.$f7.notification.create({
-        icon: '<i class="icon marshal-icon">7</i>',
+        icon: '<i class="icon marshal-icon"> </i>',
         title: 'Маршал Сервис',
         subtitle: 'Ошибка авторизации',
         text: 'Проверьте имя пользователя и пароль.',
         closeButton: true,
     });
 
-    authSuccess = this.$f7.notification.create({
-        icon: '<i class="icon marshal-icon">7</i>',
+    authSuccess = (name) => this.$f7.notification.create({
+        icon: '<i class="icon marshal-icon"> </i>',
         title: 'Маршал Сервис',
-        subtitle: 'Добро пожаловать!',
+        subtitle: 'Добро пожаловать ' + name + '!',
         closeTimeout: 3000,
     });
 
@@ -48,11 +50,12 @@ class LoginPage extends React.Component {
         const response = await auth.login(inputLogin, inputPassword);
         if (response.status === 401) {
             this.authError.open();
-        }else if (response.status === 200) {
-            this.authSuccess.open();
+        } else if (response.status === 200) {
+            this.authSuccess(response.data.success.name).open();
+            this.$f7.views.main.router.navigate('/');
         }
         self.$f7.dialog.close();
-        console.log(response);
+        this.props.handleLogin(response.data.success);
     }
     render() {
 
@@ -94,5 +97,16 @@ class LoginPage extends React.Component {
         )
     }
 }
+const mapStateToProps = store => {
+    return {
+        user: store.user,
+    }
+};
 
-export default (LoginPage)
+const mapDispatchToProps = dispatch => {
+    return {
+        handleLogin: user => dispatch(handleLogin(user)),
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)
