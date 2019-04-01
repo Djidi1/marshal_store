@@ -1,11 +1,12 @@
 import React from 'react';
+import {connect} from "react-redux";
 import {
     List,
     ListItem,
     Icon,
 } from 'framework7-react';
 
-export default class extends React.Component {
+class SettingsPage extends React.Component {
 
     forward() {
         const app = this.$f7;
@@ -13,6 +14,7 @@ export default class extends React.Component {
     }
 
     render() {
+        const {user} = this.props;
         return (
             <div>
                 <h1>Личный кабинет</h1>
@@ -20,15 +22,28 @@ export default class extends React.Component {
                     mediaList
                     className={"no-margin"}
                 >
-                    <ListItem
-                        button
-                        link="login/"
-                        subtitle="После регистрации станут доступны дополнительные возможности"
-                    >
+                    {(user.id > 0)
+                        ?
+                        <ListItem
+                            subtitle={user.email}
+                        >
+                        <span slot="title">
+                            <Icon className={"status-icon"} material="account_circle" color="main"/> {user.name}
+                        </span>
+                        </ListItem>
+                        :
+                        <ListItem
+                            button
+                            link="login/"
+                            subtitle="После регистрации станут доступны дополнительные возможности"
+                        >
                         <span slot="title">
                             <Icon className={"status-icon"} material="account_circle" color="main"/> Вход
                         </span>
-                    </ListItem>
+                        </ListItem>
+                    }
+
+
                     <ListItem
                         button
                         link="/cars/"
@@ -42,4 +57,12 @@ export default class extends React.Component {
             </div>
         );
     }
+}
+
+const mapStateToProps = store => {
+    return {
+        user: store.user,
+    }
 };
+
+export default connect(mapStateToProps)(SettingsPage)
