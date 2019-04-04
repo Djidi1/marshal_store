@@ -6,6 +6,10 @@ import {
     SwipeoutActions,
     SwipeoutButton,
     Icon,
+    Toolbar,
+    Link,
+    Tabs,
+    Tab
 } from 'framework7-react';
 
 class StoresPage extends React.Component {
@@ -16,36 +20,70 @@ class StoresPage extends React.Component {
     }
 
     render() {
-        const {stores} = this.props;
+        const {stores, categories} = this.props;
         return (
-            <div>
-                <h1>Магазины</h1>
-                <List
-                    mediaList
-                    className={"no-margin"}
+            <React.Fragment>
+                <Toolbar
+                    tabbar
+                    top
+                    scrollable
+                    style={{top: 0}}
                 >
                     {
-                        stores.map(item =>
-                            <ListItem
-                                key={item.id}
-                                swipeout
-                                after={item.phone}
-                                subtitle={item.description}
-                                text={item.address}
-                            >
-                                <span slot="title">
-                                    <Icon className={"status-icon"} material="store" color="green"/> {item.name}
-                                </span>
-                                <SwipeoutActions left>
-                                    <SwipeoutButton color="blue" onClick={this.forward.bind(this)}>
-                                        <Icon material="favorite"/> В избранное
-                                    </SwipeoutButton>
-                                </SwipeoutActions>
-                            </ListItem>
+                        categories.map((item, index) =>
+                            <Link
+                                key={"tab-"+item.id}
+                                tabLink={"#tab-"+item.id}
+                                tabLinkActive={index === 0}
+                            >{ item.category }</Link>
                         )
                     }
-                </List>
-            </div>
+                </Toolbar>
+                <Tabs
+                    style={{
+                        overflow: 'scroll',
+                        height: 'calc(100vh - var(--f7-toolbar-height) - var(--f7-page-toolbar-bottom-offset) - var(--f7-page-toolbar-bottom-offset) )'
+                    }}
+                >
+                    {
+                        categories.map((cat, index) =>
+                            <Tab
+                                key={"tab-"+cat.id}
+                                id={"tab-"+cat.id}
+                                className="page-content"
+                                tabActive={index === 0}
+                                style={{padding: 0}}
+                            >
+                                <List
+                                    mediaList
+                                    className={"no-margin"}
+                                >
+                                    {
+                                        stores.filter( x => x.categories.find(y => y.id === cat.id)).map(item =>
+                                                <ListItem
+                                                    key={item.id}
+                                                    swipeout
+                                                    after={item.phone}
+                                                    subtitle={item.description}
+                                                    text={item.address}
+                                                >
+                                                    <span slot="title">
+                                                        <Icon className={"status-icon"} material="store" color="green"/> {item.name}
+                                                    </span>
+                                                    <SwipeoutActions left>
+                                                        <SwipeoutButton color="blue" onClick={this.forward.bind(this)}>
+                                                            <Icon material="favorite"/> В избранное
+                                                        </SwipeoutButton>
+                                                    </SwipeoutActions>
+                                                </ListItem>
+                                        )
+                                    }
+                                </List>
+                            </Tab>
+                        )
+                    }
+                </Tabs>
+            </React.Fragment>
         );
     }
 }
@@ -54,6 +92,7 @@ const mapStateToProps = store => {
     console.log(store);
     return {
         stores: store.stores.shops,
+        categories: store.stores.categories,
     }
 };
 

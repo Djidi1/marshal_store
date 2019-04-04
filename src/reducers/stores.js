@@ -12,12 +12,13 @@ const initialState = {
             address: 'address',
             phone: 'phone',
             comment: 'comment',
+            categories: [],
             updated_at: new Date()
         }],
     categories: [
         {
             id: 1,
-            name: 'Title',
+            category: 'Title',
         }],
     };
 
