@@ -17,7 +17,7 @@ i.icon.marshal-icon {
 }
 
 .search-bar.subnavbar {
-    height: auto;
+    height: auto !important;
 }
 .stores-list .page-content {
     padding-top: calc(var(--f7-navbar-height) + 52px) !important;

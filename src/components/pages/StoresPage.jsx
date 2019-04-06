@@ -6,10 +6,8 @@ import {
     SwipeoutActions,
     SwipeoutButton,
     Icon,
-    Toolbar,
-    Link,
-    Tabs,
-    Tab
+    AccordionContent,
+    BlockTitle,
 } from 'framework7-react';
 
 class StoresPage extends React.Component {
@@ -23,43 +21,24 @@ class StoresPage extends React.Component {
         const {stores, categories} = this.props;
         return (
             <React.Fragment>
-                <Toolbar
-                    tabbar
-                    top
-                    scrollable
-                    style={{top: 0}}
-                >
+                <BlockTitle>Выберите интересующую вас категорию автотоваров:</BlockTitle>
+                <List accordionList>
                     {
-                        categories.map((item, index) =>
-                            <Link
-                                key={"tab-"+item.id}
-                                tabLink={"#tab-"+item.id}
-                                tabLinkActive={index === 0}
-                            >{ item.category }</Link>
-                        )
-                    }
-                </Toolbar>
-                <Tabs
-                    style={{
-                        overflow: 'scroll',
-                        height: 'calc(100vh - var(--f7-toolbar-height) - var(--f7-page-toolbar-bottom-offset) - var(--f7-page-toolbar-bottom-offset) )'
-                    }}
-                >
-                    {
-                        categories.map((cat, index) =>
-                            <Tab
-                                key={"tab-"+cat.id}
-                                id={"tab-"+cat.id}
-                                className="page-content"
-                                tabActive={index === 0}
-                                style={{padding: 0}}
-                            >
-                                <List
-                                    mediaList
-                                    className={"no-margin"}
-                                >
-                                    {
-                                        stores.filter( x => x.categories.find(y => y.id === cat.id)).map(item =>
+                        categories.sort((a, b) => {
+                            return a.category < b.category ? -1 : 1
+                        })
+                            .map((cat, index) =>
+                            <ListItem
+                                key={index}
+                                accordionItem
+                                title={cat.category}>
+                                <AccordionContent>
+                                    <List
+                                        mediaList
+                                        className={"no-margin"}
+                                    >
+                                        {
+                                            stores.filter(x => x.categories.find(y => y.id === cat.id)).map(item =>
                                                 <ListItem
                                                     key={item.id}
                                                     swipeout
@@ -68,7 +47,8 @@ class StoresPage extends React.Component {
                                                     text={item.address}
                                                 >
                                                     <span slot="title">
-                                                        <Icon className={"status-icon"} material="store" color="green"/> {item.name}
+                                                        <Icon className={"status-icon"} material="store"
+                                                              color="green"/> {item.name}
                                                     </span>
                                                     <SwipeoutActions left>
                                                         <SwipeoutButton color="blue" onClick={this.forward.bind(this)}>
@@ -76,13 +56,14 @@ class StoresPage extends React.Component {
                                                         </SwipeoutButton>
                                                     </SwipeoutActions>
                                                 </ListItem>
-                                        )
-                                    }
-                                </List>
-                            </Tab>
+                                            )
+                                        }
+                                    </List>
+                                </AccordionContent>
+                            </ListItem>
                         )
                     }
-                </Tabs>
+                </List>
             </React.Fragment>
         );
     }

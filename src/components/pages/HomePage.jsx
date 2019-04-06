@@ -47,6 +47,12 @@ class initApplication {
 
 
 class HomePage extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            title: "Заявки",
+        }
+    }
 
     async componentDidMount() {
         this.$f7.dialog.preloader('Загрузка...');
@@ -57,18 +63,23 @@ class HomePage extends React.Component {
 
     new_request(reqId) {
         const app = this.$f7;
-        app.views.main.router.navigate('open_request/' + reqId + '/');
+        app.views.main.router.navigate('/open_request/' + reqId + '/');
         return false;
     }
 
+    chgTitle = (title) => {
+        this.setState({title: title});
+    };
+
     render() {
+        const { title } = this.state;
         return (
             <Page hideToolbarOnScroll pageContent={false}>
                 <Navbar
                     color="white"
                     textColor="white"
                     bgColor="main"
-                    title="Маршал Сервис"
+                    title={"Маршал Сервис" + (title !== '' ? (' / ' + title) : "")}
                 >
                     <NavRight>
                         <Offline>
@@ -82,15 +93,13 @@ class HomePage extends React.Component {
                     labels
                     color="main"
                 >
-                    <Link tabLink="#requests" tabLinkActive text="Заявки" iconMd="material:important_devices"/>
-                    <Link tabLink="#stores" text="Магазины" iconMd="material:store"/>
-                    <Link tabLink="#new"
-                          onClick={() => this.new_request(0)} text=" "
-                    >
+                    <Link tabLink="#requests" onClick={() => this.chgTitle('Заявки')} tabLinkActive text="Заявки" iconMd="material:important_devices"/>
+                    <Link tabLink="#stores" onClick={() => this.chgTitle('Магазины')} text="Магазины" iconMd="material:store"/>
+                    <Link tabLink="#new" onClick={() => this.new_request(0)} text=" " >
                         <Icon material="add"/>
                     </Link>
-                    <Link tabLink="#sto" text="СТО" iconMd="material:build"/>
-                    <Link tabLink="#person" text="Кабинет" iconMd="material:person"/>
+                    <Link tabLink="#sto" onClick={() => this.chgTitle('СТО')} text="СТО" iconMd="material:build"/>
+                    <Link tabLink="#person" onClick={() => this.chgTitle('Личный Кабинет')} text="Кабинет" iconMd="material:person"/>
                 </Toolbar>
                 <Fab
                     href="open_request/0/"

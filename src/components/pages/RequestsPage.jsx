@@ -6,6 +6,7 @@ import {
     SwipeoutActions,
     SwipeoutButton,
     Icon,
+    BlockTitle
 } from 'framework7-react';
 
 class RequestsPage extends React.Component {
@@ -29,8 +30,10 @@ class RequestsPage extends React.Component {
         const {requests} = this.props;
 
         return (
-            <div>
-                <h1>Заявки</h1>
+            <React.Fragment>
+                <BlockTitle
+                    style={{whiteSpace: 'initial'}}
+                >Здесь вы можете подать заявку на подбор необходимого вам атотовара или запчасти.</BlockTitle>
                 <List
                     mediaList
                     className={"no-margin"}
@@ -66,16 +69,16 @@ class RequestsPage extends React.Component {
                         })
                     }
                 </List>
-            </div>
+            </React.Fragment>
         );
     }
-};
+}
 
 
 const mapStateToProps = store => {
     return {
         requests: store.requests,
     }
-}
+};
 
 export default connect(mapStateToProps)(RequestsPage)

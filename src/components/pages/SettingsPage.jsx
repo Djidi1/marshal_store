@@ -50,7 +50,7 @@ class SettingsPage extends React.Component {
                         subtitle="Для быстрого поиска"
                     >
                         <span slot="title">
-                            <Icon className={"status-icon"} material="directions_car" color="main"/> Ваши автомобили
+                            <Icon className={"status-icon"} material="directions_car" color="main"/> Мои автомобили
                         </span>
                     </ListItem>
                 </List>

@@ -7,17 +7,38 @@ import {
     Block,
     BlockTitle,
     Button,
+    Chip,
 } from 'framework7-react';
+import connect from "react-redux/es/connect/connect";
 
 
-export default class NewRequestPage extends Component {
-    set_stores() {
-        console.log('set_stores');
-        const app = this.$f7;
-        app.views.main.router.navigate('/stores_list/');
+class NewRequestPage extends Component {
+    constructor() {
+        super();
+        this.state = {
+            selected_shops: []
+        }
     }
 
+    handleShops = (shops) => {
+        this.setState({selected_shops: shops});
+    };
+
+    set_stores = () => {
+        const app = this.$f7;
+        app.views.main.router.navigate('/stores_list/', {
+            props: {
+                handleShops: this.handleShops,
+                selected_shops: this.state.selected_shops
+            }
+        });
+    };
+
     render() {
+        const { selected_shops } = this.state;
+        const { shops } = this.props;
+        const selectedShops = shops.filter( x => selected_shops.indexOf(x.id) !== -1);
+
         return (
             <Page>
                 <Navbar
@@ -34,7 +55,9 @@ export default class NewRequestPage extends Component {
                 марки и модели автомобиля,
                 количества ответов магазинов
                 */}
-                    <BlockTitle>Здесь вы можете оставить заявку на подбор необходимой вам запчасти или услуги.</BlockTitle>
+                    <BlockTitle
+                        style={{whiteSpace: 'initial'}}
+                    >Здесь вы можете оставить заявку на подбор необходимой вам запчасти или услуги.</BlockTitle>
                     <List noHairlinesMd>
                         <ListInput
                             outline
@@ -53,15 +76,24 @@ export default class NewRequestPage extends Component {
                             clearButton
                         />
 
-                        <ListInput
-                            outline
-                            label="Запрос в магазин(ы)"
-                            floatingLabel
-                            type="text"
-                            onFocus={() => this.set_stores()}
-                            info="Выберите магазин из списка или отправьте запрос всем"
-                            clearButton
-                        />
+                        <BlockTitle>Запрос в магазин(ы):
+                            <Button
+                                small
+                                fill
+                                onClick={() => this.set_stores()}
+                                style={{ float: 'right', display: 'inline-block'}}
+                            >Выбрать</Button>
+                        </BlockTitle>
+                        <Block strong>
+                            {
+                                selectedShops.length > 0
+                                    ?
+                                    selectedShops.map((item, index) => {
+                                        return <Chip key={index} text={item.name}/>
+                                    })
+                                    : "Запрос во все магазины"
+                            }
+                        </Block>
                 </List>
                 <Block>
                     <Button
@@ -72,3 +104,13 @@ export default class NewRequestPage extends Component {
         );
     }
 }
+
+
+const mapStateToProps = store => {
+    return {
+        requests: store.requests,
+        shops: store.stores.shops,
+    }
+};
+
+export default connect(mapStateToProps)(NewRequestPage)
