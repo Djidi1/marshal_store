@@ -16,12 +16,22 @@ class NewRequestPage extends Component {
     constructor() {
         super();
         this.state = {
-            selected_shops: []
+            selected_shops: [],
+            shop_id: null,
+            category_id: null,
+            car_id: null,
+            vin: null,
+            text: null,
         }
     }
 
     handleShops = (shops) => {
-        this.setState({selected_shops: shops});
+        this.setState({ selected_shops: shops, shop_id: shops[0] });
+    };
+
+
+    handleData = (name, value) => {
+        this.setState({[name]: value});
     };
 
     set_stores = () => {
@@ -34,10 +44,16 @@ class NewRequestPage extends Component {
         });
     };
 
+    sendRequest = () => {
+        let req_data = {...this.state};
+        delete req_data.selected_shops;
+        console.log(req_data)
+    };
+
     render() {
-        const { selected_shops } = this.state;
-        const { shops } = this.props;
-        const selectedShops = shops.filter( x => selected_shops.indexOf(x.id) !== -1);
+        const {selected_shops} = this.state;
+        const {shops, categories} = this.props;
+        const selectedShops = shops.filter(x => selected_shops.indexOf(x.id) !== -1);
 
         return (
             <Page>
@@ -55,49 +71,76 @@ class NewRequestPage extends Component {
                 марки и модели автомобиля,
                 количества ответов магазинов
                 */}
-                    <BlockTitle
-                        style={{whiteSpace: 'initial'}}
-                    >Здесь вы можете оставить заявку на подбор необходимой вам запчасти или услуги.</BlockTitle>
-                    <List noHairlinesMd>
-                        <ListInput
-                            outline
-                            label="Заголовок"
-                            floatingLabel
-                            type="text"
-                            placeholder="Колодки, маслоб свечи"
-                            clearButton
-                        />
-                        <ListInput
-                            outline
-                            label="Описание"
-                            floatingLabel
-                            type="textarea"
-                            placeholder="Дополнительная информация о требуемом товаре..."
-                            clearButton
-                        />
+                <BlockTitle
+                    style={{whiteSpace: 'initial'}}
+                >Здесь вы можете оставить заявку на подбор необходимой вам запчасти или услуги.</BlockTitle>
+                <List>
+                    <ListInput
+                        label="Категория товара"
+                        type="select"
+                        placeholder="Выберите..."
+                        onChange={(event) => this.handleData('category_id', event.target.value)}
+                    >
+                        <option key={0} value={null}>Выберите...</option>
+                        {
+                        categories.map((item) =>
+                            <option key={item.id} value={item.id}>{item.category}</option>
+                        )
+                    }
+                    </ListInput>
+                    <ListInput
+                        label="Марка автомобиля"
+                        type="select"
+                        placeholder="Выберите..."
+                        onChange={(event) => this.handleData('car_id', event.target.value)}
+                    >
+                        <option key={0} value={null}>Выберите...</option>
+                        <option value="1">Mercedes</option>
+                        <option value="2">BMW</option>
+                    </ListInput>
+                    <ListInput
+                        outline
+                        label="VIN"
+                        floatingLabel
+                        type="text"
+                        placeholder="Для более быстрого поиска запчасти введите VIN номер автомобиля"
+                        onChange={(event) => this.handleData('vin', event.target.value)}
+                    />
+                    <ListInput
+                        outline
+                        label="Описание"
+                        floatingLabel
+                        type="textarea"
+                        placeholder="Дополнительная информация о требуемом товаре..."
+                        onChange={(event) => this.handleData('text', event.target.value)}
+                    />
 
-                        <BlockTitle>Запрос в магазин(ы):
-                            <Button
-                                small
-                                fill
-                                onClick={() => this.set_stores()}
-                                style={{ float: 'right', display: 'inline-block'}}
-                            >Выбрать</Button>
-                        </BlockTitle>
-                        <Block strong>
-                            {
-                                selectedShops.length > 0
-                                    ?
-                                    selectedShops.map((item, index) => {
-                                        return <Chip key={index} text={item.name}/>
-                                    })
-                                    : "Запрос во все магазины"
-                            }
-                        </Block>
+                    <BlockTitle>Запрос в магазин:
+                        <Button
+                            small
+                            fill
+                            onClick={() => this.set_stores()}
+                            style={{float: 'right', display: 'inline-block'}}
+                        >Выбрать</Button>
+                    </BlockTitle>
+                    {
+                        selectedShops.length > 0 ?
+                            (
+                                <Block strong>
+                                    {
+                                        selectedShops.map((item, index) => {
+                                            return <Chip key={index} text={item.name}/>
+                                        })
+                                    }
+                                </Block>
+                            )
+                            : null
+                    }
                 </List>
                 <Block>
                     <Button
                         fill
+                        onClick={this.sendRequest}
                     >Отправить заявку</Button>
                 </Block>
             </Page>
@@ -110,6 +153,7 @@ const mapStateToProps = store => {
     return {
         requests: store.requests,
         shops: store.stores.shops,
+        categories: store.stores.categories,
     }
 };
 

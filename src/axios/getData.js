@@ -12,9 +12,10 @@ export class getData {
                 set(type, res.data).then();
                 return res.data;
             }
-            return false;
+            return undefined;
         } catch (error) {
-            return error.response;
+            console.log(error.response);
+            return undefined;
         }
     };
 }

@@ -37,6 +37,8 @@ class ShopsList extends React.Component {
     }
 
     handleToggle = (item) => {
+        this.setState({selectedShops: [item.id]});
+        /*
         let selectedShops = this.state.selectedShops;
         item.checked = (item.hasOwnProperty('checked')) ? !item.checked : true;
         if (item.checked) {
@@ -45,6 +47,7 @@ class ShopsList extends React.Component {
             selectedShops = selectedShops.filter(x => x !== item.id);
         }
         this.setState({selectedShops: selectedShops});
+        */
     };
 
     setShops = () => {
@@ -62,7 +65,7 @@ class ShopsList extends React.Component {
 
     render() {
         const {shops} = this.props;
-        const {vlData} = this.state;
+        const {vlData, selectedShops} = this.state;
         return (
             <Page
                 className="stores-list">
@@ -108,8 +111,8 @@ class ShopsList extends React.Component {
                             <ListItem
                                 key={index}
                                 mediaItem
-                                checkbox
-                                checked={item.checked}
+                                radio
+                                checked={selectedShops.indexOf(item.id) !== -1 /*item.checked*/}
                                 onClick={() => this.handleToggle(item)}
                                 title={item.name}
                                 subtitle={item.address}
