@@ -11,6 +11,8 @@ import {
 } from 'framework7-react';
 import connect from "react-redux/es/connect/connect";
 
+import {setData} from "../../axios/setData";
+import {handleAddRequests} from "../../actions/DataActions";
 
 class NewRequestPage extends Component {
     constructor() {
@@ -47,8 +49,22 @@ class NewRequestPage extends Component {
     sendRequest = () => {
         let req_data = {...this.state};
         delete req_data.selected_shops;
-        console.log(req_data)
+        req_data["user_id"] = this.props.user.id;
+        const set_data = new setData();
+        set_data.data('request-add',req_data).then(data => {
+            this.props.handleAddRequests(data.result);
+        });
+        this.addRequestSuccess.open();
+        this.$f7.views.main.router.navigate('/');
     };
+
+    addRequestSuccess = this.$f7.notification.create({
+        icon: '<i class="icon marshal-icon"> </i>',
+        title: 'Маршал Сервис',
+        subtitle: 'Заявка добавлена',
+        text: 'В ближайшее время вам ответят.',
+        closeTimeout: 3000,
+    });
 
     render() {
         const {selected_shops} = this.state;
@@ -89,7 +105,7 @@ class NewRequestPage extends Component {
                     }
                     </ListInput>
                     <ListInput
-                        label="Марка автомобиля"
+                        label="Автомобиль"
                         type="select"
                         placeholder="Выберите..."
                         onChange={(event) => this.handleData('car_id', event.target.value)}
@@ -151,10 +167,17 @@ class NewRequestPage extends Component {
 
 const mapStateToProps = store => {
     return {
+        user: store.user,
         requests: store.requests,
         shops: store.stores.shops,
         categories: store.stores.categories,
     }
 };
+//handleAddRequests
+const mapDispatchToProps = dispatch => {
+    return {
+        handleAddRequests: data => dispatch(handleAddRequests(data)),
+    }
+};
 
-export default connect(mapStateToProps)(NewRequestPage)
+export default connect(mapStateToProps, mapDispatchToProps)(NewRequestPage)

@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {connect} from "react-redux";
+
 import {
     Page,
     Navbar,
@@ -9,8 +11,17 @@ import {
 } from 'framework7-react';
 
 
-export default class RequestPage extends Component {
+class ResponsesPage extends Component {
+
+    get_category(cat_id) {
+        const cat = this.props.categories.find(x => x.id === cat_id);
+        return cat !== undefined ? cat.category : "Без категории"
+    }
+
     render() {
+        const {reqId, requests} = this.props;
+        const request = requests.find( x=> x.id === Number(reqId));
+
         return (
             <Page>
                 <Navbar
@@ -30,25 +41,19 @@ export default class RequestPage extends Component {
                         >
                             <ListItem
                                 swipeout
-                                after="17:14 08.03.2018"
-                                subtitle="Предложений: 10"
-                                text="Необходимо подобрать тормозные колодки на автомобиль такой-то марки такого-то года выпуска."
+                                after={request.created_at.toLocaleString()}
+                                subtitle={"Предложений: " + (request.answers || 0) + ""}
+                                text={request.text}
                             >
                                 <span slot="title">
-                                    <Icon className={"status-icon"} material="access_time" color="blue"/> Колодки
+                                    <Icon className={"status-icon"} material="access_time" color="blue"/>
+                                    {this.get_category(request.category_id)}
                                 </span>
                                 <span slot="sub-title">
                                     <b>Ford</b> Fiesta
                                 </span>
                             </ListItem>
                         </List>
-                        {/*<Block strong>
-                    <ul>
-                        {Object.keys(this.$f7route.params).map(key => (
-                            <li key={key}><b>{key}:</b> {this.$f7route.params[key]}</li>
-                        ))}
-                    </ul>
-                </Block>*/}
                     </Subnavbar>
                 </Navbar>
                 <List
@@ -117,3 +122,13 @@ export default class RequestPage extends Component {
         );
     }
 }
+
+
+const mapStateToProps = store => {
+    return {
+        requests: store.requests,
+        categories: store.stores.categories,
+    }
+};
+
+export default connect(mapStateToProps)(ResponsesPage)

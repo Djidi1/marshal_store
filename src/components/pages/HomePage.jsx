@@ -22,7 +22,7 @@ import STOPage from './STOPage';
 
 import {getData} from '../../axios/getData'
 import {handleLogin} from "../../actions/UserActions";
-import {handleCategories, handleShops} from "../../actions/DataActions";
+import {handleCategories, handleShops, handleRequests} from "../../actions/DataActions";
 
 // Load data from indexedDB to Store
 class initApplication {
@@ -31,6 +31,7 @@ class initApplication {
         await get('user').then(value => value !== undefined && props.handleLogin(value));
         await get('shops').then(value => value !== undefined && props.handleShops(value));
         await get('categories').then(value => value !== undefined && props.handleCategories(value));
+        await get('requests').then(value => value !== undefined && props.handleRequests(value));
 
         // from internet
         let detect = new Detector();
@@ -39,6 +40,7 @@ class initApplication {
             let get_data = new getData();
             get_data.data('shops').then(value => value !== undefined && props.handleShops(value));
             get_data.data('categories').then(value => value !== undefined && props.handleCategories(value));
+            get_data.data('requests').then(value => value !== undefined && props.handleRequests(value));
         } else {
             console.log(detect.state);
         }
@@ -141,6 +143,7 @@ const mapDispatchToProps = dispatch => {
         handleLogin: user => dispatch(handleLogin(user)),
         handleShops: shops => dispatch(handleShops(shops)),
         handleCategories: categories => dispatch(handleCategories(categories)),
+        handleRequests: requests => dispatch(handleRequests(requests)),
     }
 };
 
