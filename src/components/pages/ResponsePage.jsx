@@ -42,31 +42,6 @@ export default class ResponsePage extends Component {
                                 <b slot="title"><Icon className={"status-icon"} material="fiber_new" color="green"/> 500р</b>
                             </ListItem>
                         </List>
-                        {/*<Block strong>
-                    <ul>
-                        {Object.keys(this.$f7route.params).map(key => (
-                            <li key={key}><b>{key}:</b> {this.$f7route.params[key]}</li>
-                        ))}
-                    </ul>
-                </Block>*/}
-
-                        {/*<List noHairlinesMd>
-                            <ListInput
-                                outline
-                                label="Заголовок"
-                                floatingLabel
-                                type="text"
-                                placeholder="Описание того что необходимо..."
-                            />
-                            <ListInput
-                                outline
-                                label="Текст заявки"
-                                floatingLabel
-                                type="textarea"
-                                resizable
-                                placeholder="Описание того что необходимо..."
-                            />
-                        </List>*/}
                     </Subnavbar>
                 </Navbar>
                 <Messages/>

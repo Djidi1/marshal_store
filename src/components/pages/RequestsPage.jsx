@@ -57,7 +57,11 @@ class RequestsPage extends React.Component {
                                     text={item.text}
                                 >
                                 <span slot="title">
-                                    <Icon className={"status-icon"} material={item.status} color="blue"/>
+                                    <Icon
+                                        className={"status-icon"}
+                                        material={item.answers > 0 ? 'check_circle_outline' : 'access_time'}
+                                        color="blue"
+                                    />
                                     {this.get_category(item.category_id)}
                                 </span>
                                     <SwipeoutActions left>

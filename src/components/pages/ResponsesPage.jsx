@@ -8,6 +8,7 @@ import {
     List,
     Icon,
     ListItem,
+    Block,
 } from 'framework7-react';
 
 
@@ -19,8 +20,8 @@ class ResponsesPage extends Component {
     }
 
     render() {
-        const {reqId, requests} = this.props;
-        const request = requests.find( x=> x.id === Number(reqId));
+        const {reqId, requests, answers} = this.props;
+        const request = requests.find(x => x.id === Number(reqId));
 
         return (
             <Page>
@@ -49,9 +50,6 @@ class ResponsesPage extends Component {
                                     <Icon className={"status-icon"} material="access_time" color="blue"/>
                                     {this.get_category(request.category_id)}
                                 </span>
-                                <span slot="sub-title">
-                                    <b>Ford</b> Fiesta
-                                </span>
                             </ListItem>
                         </List>
                     </Subnavbar>
@@ -60,63 +58,24 @@ class ResponsesPage extends Component {
                     mediaList
                     noHairlinesMd
                 >
-                    <ListItem
-                        link="/requests/response/1/"
-                        after="17:14 08.03.2018"
-                        subtitle="1000 запчастей"
-                        text="У нас есть то что вам нужно"
-                    >
-                        <b slot="title"><Icon className={"status-icon"} material="fiber_new" color="green"/> 500р</b>
-                    </ListItem>
-                    <ListItem
-                        link="/requests/response/1/"
-                        after="17:14 08.03.2018"
-                        subtitle="1000 запчастей"
-                        text="У нас есть то что вам нужно"
-                    >
-                        <b slot="title"><Icon className={"status-icon"} material="fiber_new" color="green"/> 500р</b>
-                    </ListItem>
-                    <ListItem
-                        link="/requests/response/1/"
-                        after="17:14 08.03.2018"
-                        subtitle="1000 запчастей"
-                        text="У нас есть то что вам нужно"
-                    >
-                        <b slot="title"><Icon className={"status-icon"} material="remove_circle" color="red"/> 500р</b>
-                    </ListItem>
-                    <ListItem
-                        link="/requests/response/1/"
-                        after="17:14 08.03.2018"
-                        subtitle="1000 запчастей"
-                        text="У нас есть то что вам нужно"
-                    >
-                        <b slot="title"><Icon className={"status-icon"} material="remove_circle" color="red"/> 500р</b>
-                    </ListItem>
-                    <ListItem
-                        link="/requests/response/1/"
-                        after="17:14 08.03.2018"
-                        subtitle="1000 запчастей"
-                        text="У нас есть то что вам нужно"
-                    >
-                        <b slot="title"><Icon className={"status-icon"} material="remove_circle" color="red"/> 500р</b>
-                    </ListItem>
-                    <ListItem
-                        link="/requests/response/1/"
-                        after="17:14 08.03.2018"
-                        subtitle="1000 запчастей"
-                        text="У нас есть то что вам нужно"
-                    >
-                        <b slot="title">500р</b>
-                    </ListItem>
-                    <ListItem
-                        link="/requests/response/1/"
-                        after="17:14 08.03.2018"
-                        subtitle="1000 запчастей"
-                        text="У нас есть то что вам нужно"
-                    >
-                        <b slot="title">500р</b>
-                    </ListItem>
-
+                    {
+                        answers.length === 0
+                            ?
+                            <Block>На ваш запрос пока нет ответов...</Block>
+                            :
+                            answers.map(item => {
+                                return <ListItem
+                                    key={item.id}
+                                    link="/requests/response/1/"
+                                    after="17:14 08.03.2018"
+                                    subtitle="1000 запчастей"
+                                    text="У нас есть то что вам нужно"
+                                >
+                                    <b slot="title"><Icon className={"status-icon"} material="fiber_new"
+                                                          color="green"/> 500р</b>
+                                </ListItem>
+                            })
+                    }
                 </List>
             </Page>
         );
@@ -126,6 +85,7 @@ class ResponsesPage extends Component {
 
 const mapStateToProps = store => {
     return {
+        answers: store.answers,
         requests: store.requests,
         categories: store.stores.categories,
     }
