@@ -70,7 +70,6 @@ class StoresPage extends React.Component {
 }
 
 const mapStateToProps = store => {
-    console.log(store);
     return {
         stores: store.stores.shops,
         categories: store.stores.categories,

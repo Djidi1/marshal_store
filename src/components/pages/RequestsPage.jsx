@@ -1,5 +1,9 @@
 import React from 'react';
 import {connect} from "react-redux";
+import {handleRequest} from "../../actions/DataActions";
+import {getData} from "../../axios/getData";
+import {Detector} from "react-detect-offline";
+import {get} from "idb-keyval";
 import {
     List,
     ListItem,
@@ -10,6 +14,16 @@ import {
     BlockTitle
 } from 'framework7-react';
 
+const getRequest = async (props, reqId) => {
+    let detect = new Detector();
+    if (await detect.state.online) {
+        let get_data = new getData();
+        await get_data.data('request/' + reqId).then(value => value !== undefined && props.handleRequest(value));
+    }else{
+        await get('request/' + reqId).then(value => value !== undefined && props.handleRequest(value));
+    }
+};
+
 class RequestsPage extends React.Component {
     constructor(props) {
         super(props);
@@ -19,6 +33,14 @@ class RequestsPage extends React.Component {
     edit_request(reqId) {
         const app = this.$f7;
         app.views.main.router.navigate('open_request/' + reqId + '/');
+    }
+
+    open_request(reqId) {
+        this.$f7.dialog.preloader('Получаем предложения...');
+        getRequest(this.props, reqId).then(() => {
+            this.$f7.views.main.router.navigate('requests/' + reqId + '/');
+            this.$f7.dialog.close();
+        });
     }
 
     reply() {
@@ -51,7 +73,7 @@ class RequestsPage extends React.Component {
                                 return <ListItem
                                     key={item.id}
                                     swipeout
-                                    link={"requests/" + item.id + "/"}
+                                    onClick={() => this.open_request(item.id)}
                                     after={item.created_at.toLocaleString()}
                                     subtitle={"Предложений: " + (item.answers || 0) + ""}
                                     text={item.text}
@@ -65,7 +87,7 @@ class RequestsPage extends React.Component {
                                     {this.get_category(item.category_id)}
                                 </span>
                                     <SwipeoutActions left>
-                                        <SwipeoutButton color="blue" onClick={() => this.edit_request(1)}>
+                                        <SwipeoutButton color="blue" onClick={() => this.edit_request(item.id)}>
                                             <Icon material="edit"/> Редактировать
                                         </SwipeoutButton>
                                     </SwipeoutActions>
@@ -95,4 +117,10 @@ const mapStateToProps = store => {
     }
 };
 
-export default connect(mapStateToProps)(RequestsPage)
+const mapDispatchToProps = dispatch => {
+    return {
+        handleRequest: request => dispatch(handleRequest(request)),
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RequestsPage)

@@ -1,6 +1,7 @@
 export const SHOPS_REQUEST = 'SHOPS_REQUEST';
 export const CATEGORIES_REQUEST = 'CATEGORIES_REQUEST';
 export const REQUESTS = 'REQUESTS';
+export const REQUEST = 'REQUEST';
 export const ADD_REQUESTS = 'ADD_REQUESTS';
 export const ANSWERS = 'ANSWERS';
 
@@ -24,6 +25,14 @@ export function handleRequests(payload) {
     return function(dispatch) {
         dispatch({
             type: REQUESTS,
+            payload: payload,
+        })
+    }
+}
+export function handleRequest(payload) {
+    return function(dispatch) {
+        dispatch({
+            type: REQUEST,
             payload: payload,
         })
     }
