@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 
+import {Detector} from "react-detect-offline";
+import {getData} from "../../axios/getData";
+import {handleResponse} from "../../actions/DataActions";
+import {get} from "idb-keyval";
+
 import {
     Page,
     Navbar,
@@ -10,6 +15,16 @@ import {
     ListItem,
     Block,
 } from 'framework7-react';
+
+const getResponse = async (props, resp_id) => {
+    let detect = new Detector();
+    if (await detect.state.online) {
+        let get_data = new getData();
+        await get_data.data('answer/' + resp_id).then(value => value !== undefined && props.handleResponse(value));
+    }else{
+        await get('answer/' + resp_id).then(value => value !== undefined && props.handleResponse(value));
+    }
+};
 
 class ResponsesPage extends Component {
 
@@ -24,7 +39,11 @@ class ResponsesPage extends Component {
     }
 
     open_response(resp_id) {
-        this.$f7.views.main.router.navigate('/requests/response/' + resp_id + '/');
+        this.$f7.dialog.preloader('Загружаем предложение...');
+        getResponse(this.props, resp_id).then(() => {
+            this.$f7.views.main.router.navigate('/requests/response/' + resp_id + '/');
+            this.$f7.dialog.close();
+        });
     }
 
     render() {
@@ -68,7 +87,7 @@ class ResponsesPage extends Component {
 created_at: "2019-04-09 00:00:00"
 description: "We have something "
 id: 1
-price: true
+is_new: true
 price: 200
 request_id: 1
 shop_id: 7
@@ -92,7 +111,7 @@ user_id: 1
                                 >
                                     <b slot="title">
                                         {
-                                            item.price ? <Icon className={"status-icon"} material="fiber_new"
+                                            item.is_new ? <Icon className={"status-icon"} material="fiber_new"
                                                   color="green"/> : null
                                         }
                                         {item.price}</b>
@@ -114,4 +133,11 @@ const mapStateToProps = store => {
     }
 };
 
-export default connect(mapStateToProps)(ResponsesPage)
+
+const mapDispatchToProps = dispatch => {
+    return {
+        handleResponse: request => dispatch(handleResponse(request)),
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ResponsesPage)

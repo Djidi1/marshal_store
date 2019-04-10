@@ -8,12 +8,24 @@ import {
     Icon,
     ListItem,
     NavRight,
+    Block,
 } from 'framework7-react';
 
 import Messages from './Messages'
+import connect from "react-redux/es/connect/connect";
 
-export default class ResponsePage extends Component {
+
+
+class ResponsePage extends Component {
+
+    get_shop(shop_id) {
+        const shop = this.props.shops.find(x => x.id === shop_id);
+        return shop !== undefined ? shop.name : "Без категории"
+    }
+
     render() {
+        const {response} = this.props;
+
         return (
             <Page>
                 <Navbar
@@ -35,17 +47,39 @@ export default class ResponsePage extends Component {
                             className={"no-margin list-request"}
                         >
                             <ListItem
-                                after="17:14 08.03.2018"
-                                subtitle="1000 запчастей"
-                                text="У нас есть то что вам нужно"
+                                key={response.id}
+                                onClick={() => this.open_response(response.id)}
+                                after={response.created_at.toLocaleString()}
+                                subtitle={this.get_shop(response.shop_id)}
+                                text={response.description}
                             >
-                                <b slot="title"><Icon className={"status-icon"} material="fiber_new" color="green"/> 500р</b>
+                                <b slot="title">
+                                    {
+                                        response.is_new ? <Icon className={"status-icon"} material="fiber_new"
+                                                            color="green"/> : null
+                                    }
+                                    {response.price}</b>
                             </ListItem>
                         </List>
                     </Subnavbar>
                 </Navbar>
-                <Messages/>
+                {
+                    (response.messages.length > 0) ?
+                        <Messages messages={response.messages}/>
+                        :
+                        <Block>Здесь вы можете уточнить детали запроса.</Block>
+                }
             </Page>
         );
     }
 }
+
+
+const mapStateToProps = store => {
+    return {
+        response: store.response[0],
+        shops: store.stores.shops,
+    }
+};
+
+export default connect(mapStateToProps)(ResponsePage)

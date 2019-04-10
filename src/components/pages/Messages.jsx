@@ -23,54 +23,8 @@ export default class extends React.Component {
             messagesData: [
                 {
                     type: 'sent',
-                    text: 'Hi, Kate',
-                },
-                {
-                    type: 'sent',
-                    text: 'How are you?',
-                },
-                {
-                    name: 'Kate',
-                    type: 'received',
-                    text: 'Hi, I am good!',
-                    avatar: 'https://cdn.framework7.io/placeholder/people-100x100-9.jpg',
-                },
-                {
-                    name: 'Blue Ninja',
-                    type: 'received',
-                    text: 'Hi there, I am also fine, thanks! And how are you?',
-                    avatar: 'https://cdn.framework7.io/placeholder/people-100x100-7.jpg',
-                },
-                {
-                    type: 'sent',
-                    text: 'Hey, Blue Ninja! Glad to see you ;)',
-                },
-                {
-                    type: 'sent',
-                    text: 'Hey, look, cutest kitten ever!',
-                },
-                {
-                    type: 'sent',
-                    image: 'https://cdn.framework7.io/placeholder/cats-200x260-4.jpg',
-
-                },
-                {
-                    name: 'Kate',
-                    type: 'received',
-                    text: 'Nice!',
-                    avatar: 'https://cdn.framework7.io/placeholder/people-100x100-9.jpg',
-                },
-                {
-                    name: 'Kate',
-                    type: 'received',
-                    text: 'Like it very much!',
-                    avatar: 'https://cdn.framework7.io/placeholder/people-100x100-9.jpg',
-                },
-                {
-                    name: 'Blue Ninja',
-                    type: 'received',
-                    text: 'Awesome!',
-                    avatar: 'https://cdn.framework7.io/placeholder/people-100x100-7.jpg',
+                    text: 'Please wait...',
+                    date: new Date(),
                 },
             ],
             images: [
@@ -85,34 +39,11 @@ export default class extends React.Component {
                 'https://cdn.framework7.io/placeholder/cats-400x300-9.jpg',
                 'https://cdn.framework7.io/placeholder/cats-300x150-10.jpg',
             ],
-            people: [
-                {
-                    name: 'Kate Johnson',
-                    avatar: 'https://cdn.framework7.io/placeholder/people-100x100-9.jpg',
-                },
-                {
-                    name: 'Blue Ninja',
-                    avatar: 'https://cdn.framework7.io/placeholder/people-100x100-7.jpg',
-                },
-            ],
-            answers: [
-                'Yes!',
-                'No',
-                'Hm...',
-                'I am not sure',
-                'And what about you?',
-                'May be ;)',
-                'Lorem ipsum dolor sit amet, consectetur',
-                'What?',
-                'Are you sure?',
-                'Of course',
-                'Need to think about it',
-                'Amazing!!!',
-            ],
             responseInProgress: false,
         }
     }
     render() {
+
         return (
             <Page className={"messages-block"}>
                 <Messagebar
@@ -121,6 +52,8 @@ export default class extends React.Component {
                     attachmentsVisible={this.attachmentsVisible}
                     sheetVisible={this.state.sheetVisible}
                     change={() => {this.setState({sheetVisible: !this.state.sheetVisible})}}
+                    value={"Test message"}
+                    onChange={this.handleMessage.bind(this)}
                 >
                     <Link
                         iconIos="f7:camera_fill"
@@ -156,7 +89,7 @@ export default class extends React.Component {
                 </Messagebar>
 
                 <Messages ref={(el) => {this.messagesComponent = el}}>
-                    <MessagesTitle><b>Sunday, Feb 9,</b> 12:58</MessagesTitle>
+                    {/*<MessagesTitle><b>Sunday, Feb 9,</b> 12:58</MessagesTitle>*/}
 
                     {this.state.messagesData.map((message, index) => (
                         <Message
@@ -165,6 +98,7 @@ export default class extends React.Component {
                             image={message.image}
                             name={message.name}
                             avatar={message.avatar}
+                            footer={message.date.toLocaleString()}
                             first={this.isFirstMessage(message, index)}
                             last={this.isLastMessage(message, index)}
                             tail={this.isTailMessage(message, index)}
@@ -196,10 +130,20 @@ export default class extends React.Component {
     }
     get placeholder() {
         const self = this;
-        return self.state.attachments.length > 0 ? 'Add comment or Send' : 'Message';
+        return self.state.attachments.length > 0 ? 'Добавьте сообщение или отправьте' : 'Сообщение';
     }
     componentDidMount() {
         const self = this;
+        const messagesData = self.props.messages.map( (item) => {
+            return {
+                name: "user name " + item.user_id,
+                type: item.user_id === 1 ? 'sent' : 'received',
+                text: item.message,
+                date: item.updated_at,
+            }
+        });
+        self.setState({messagesData: messagesData});
+
         self.$f7ready(() => {
             self.messagebar = self.messagebarComponent.f7Messagebar;
             self.messages = self.messagesComponent.f7Messages;
@@ -209,22 +153,22 @@ export default class extends React.Component {
         const self = this;
         const previousMessage = self.state.messagesData[index - 1];
         if (message.isTitle) return false;
-        if (!previousMessage || previousMessage.type !== message.type || previousMessage.name !== message.name) return true;
-        return false;
+        return !previousMessage || previousMessage.type !== message.type || previousMessage.name !== message.name;
+
     }
     isLastMessage(message, index) {
         const self = this;
         const nextMessage = self.state.messagesData[index + 1];
         if (message.isTitle) return false;
-        if (!nextMessage || nextMessage.type !== message.type || nextMessage.name !== message.name) return true;
-        return false;
+        return !nextMessage || nextMessage.type !== message.type || nextMessage.name !== message.name;
+
     }
     isTailMessage(message, index) {
         const self = this;
         const nextMessage = self.state.messagesData[index + 1];
         if (message.isTitle) return false;
-        if (!nextMessage || nextMessage.type !== message.type || nextMessage.name !== message.name) return true;
-        return false;
+        return !nextMessage || nextMessage.type !== message.type || nextMessage.name !== message.name;
+
     }
     deleteAttachment(image) {
         const self = this;
@@ -247,6 +191,11 @@ export default class extends React.Component {
         }
         self.setState({ attachments });
     }
+
+    handleMessage(e) {
+        const self = this;
+        console.log(e);
+    }
     sendMessage() {
         const self = this;
         const text = self.messagebar.getValue().replace(/\n/g, '<br>').trim();
@@ -259,6 +208,7 @@ export default class extends React.Component {
         if (text.trim().length) {
             messagesToSend.push({
                 text,
+                date: new Date(),
             });
         }
         if (messagesToSend.length === 0) {
@@ -277,33 +227,12 @@ export default class extends React.Component {
 
         // Focus area
         if (text.length) self.messagebar.focus();
-
+/*
         // Mock response
         if (self.state.responseInProgress) return;
         self.setState({
             responseInProgress: true,
         });
-        setTimeout(() => {
-            const answer = self.state.answers[Math.floor(Math.random() * self.state.answers.length)];
-            const person = self.state.people[Math.floor(Math.random() * self.state.people.length)];
-            self.setState({
-                typingMessage: {
-                    name: person.name,
-                    avatar: person.avatar,
-                },
-            });
-            setTimeout(() => {
-                self.setState({
-                    messagesData: [...self.state.messagesData, {
-                        text: answer,
-                        type: 'received',
-                        name: person.name,
-                        avatar: person.avatar,
-                    }],
-                    typingMessage: null,
-                    responseInProgress: false,
-                });
-            }, 4000);
-        }, 1000);
+        */
     }
 };

@@ -35,13 +35,13 @@ class initApplication {
             let get_data = new getData();
             get_data.data('shops').then(value => value !== undefined && props.handleShops(value));
             get_data.data('categories').then(value => value !== undefined && props.handleCategories(value));
-            get_data.data('requests').then(value => value !== undefined && props.handleRequests(value));
+            get_data.data('userRequests').then(value => value !== undefined && props.handleRequests(value));
             // get_data.data('answers').then(value => value !== undefined && props.handleAnswers(value));
         } else {
             // from idb
             await get('shops').then(value => value !== undefined && props.handleShops(value));
             await get('categories').then(value => value !== undefined && props.handleCategories(value));
-            await get('requests').then(value => value !== undefined && props.handleRequests(value));
+            await get('userRequests').then(value => value !== undefined && props.handleRequests(value));
             // await get('answers').then(value => value !== undefined && props.handleAnswers(value));
         }
     }

@@ -4,6 +4,7 @@ export const REQUESTS = 'REQUESTS';
 export const REQUEST = 'REQUEST';
 export const ADD_REQUESTS = 'ADD_REQUESTS';
 export const ANSWERS = 'ANSWERS';
+export const RESPONSE = 'RESPONSE';
 
 export function handleShops(callback) {
     return function(dispatch) {
@@ -33,6 +34,14 @@ export function handleRequest(payload) {
     return function(dispatch) {
         dispatch({
             type: REQUEST,
+            payload: payload,
+        })
+    }
+}
+export function handleResponse(payload) {
+    return function(dispatch) {
+        dispatch({
+            type: RESPONSE,
             payload: payload,
         })
     }

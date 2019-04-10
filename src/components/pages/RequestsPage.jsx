@@ -75,7 +75,7 @@ class RequestsPage extends React.Component {
                                     swipeout
                                     onClick={() => this.open_request(item.id)}
                                     after={item.created_at.toLocaleString()}
-                                    subtitle={"Предложений: " + (item.answers || 0) + ""}
+                                    subtitle={"Предложений: " + (item.answers_count) + ""}
                                     text={item.text}
                                 >
                                 <span slot="title">
