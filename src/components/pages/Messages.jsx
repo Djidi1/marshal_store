@@ -2,46 +2,82 @@ import React from 'react';
 import {
     Page,
     Messages,
-    MessagesTitle,
+    // MessagesTitle,
     Messagebar,
     Link,
     Message,
-    MessagebarAttachment,
+   /* MessagebarAttachment,
     MessagebarAttachments,
     MessagebarSheet,
-    MessagebarSheetImage,
+    MessagebarSheetImage,*/
 } from 'framework7-react';
+import {Detector} from "react-detect-offline";
+import {getData} from "../../axios/getData";
+import {setData} from "../../axios/setData";
+import {get} from "idb-keyval";
+import {handleResponse} from "../../actions/DataActions";
+import connect from "react-redux/es/connect/connect";
 
-export default class extends React.Component {
+const getMessages = async (props, answer_id, loading) => {
+    let detect = new Detector();
+    loading.show('yellow');
+    if (await detect.state.online) {
+        let get_data = new getData();
+        await get_data.data('answer/' + answer_id).then(value => value !== undefined && props.handleResponse(value));
+    }else{
+        await get('answer/' + answer_id).then(value => value !== undefined && props.handleResponse(value));
+    }
+    setTimeout(() => {
+        loading.hide();
+    }, 500);
+};
+
+const sendMessage = async (props, payload, notificationOffline) => {
+    let detect = new Detector();
+    if (await detect.state.online) {
+        let set_data = new setData();
+        payload.forEach(data => {
+            set_data.data('message-add', data);
+        });
+    }else{
+        notificationOffline.open();
+    }
+};
+
+class respMessages extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            messageValue: '',
             attachments: [],
             sheetVisible: false,
             typingMessage: null,
             messagesData: [
                 {
-                    type: 'sent',
-                    text: 'Please wait...',
+                    type: 'received',
+                    message: 'Здравствуйте! 👋<br/>Здесь вы можете уточнить детали заказа.',
                     date: new Date(),
                 },
             ],
-            images: [
-                'https://cdn.framework7.io/placeholder/cats-300x300-1.jpg',
-                'https://cdn.framework7.io/placeholder/cats-200x300-2.jpg',
-                'https://cdn.framework7.io/placeholder/cats-400x300-3.jpg',
-                'https://cdn.framework7.io/placeholder/cats-300x150-4.jpg',
-                'https://cdn.framework7.io/placeholder/cats-150x300-5.jpg',
-                'https://cdn.framework7.io/placeholder/cats-300x300-6.jpg',
-                'https://cdn.framework7.io/placeholder/cats-300x300-7.jpg',
-                'https://cdn.framework7.io/placeholder/cats-200x300-8.jpg',
-                'https://cdn.framework7.io/placeholder/cats-400x300-9.jpg',
-                'https://cdn.framework7.io/placeholder/cats-300x150-10.jpg',
-            ],
+            images: [],
             responseInProgress: false,
         }
     }
+
+    answer_id = this.props.response.id;
+    user = this.props.user;
+
+    notificationOffline = this.$f7.notification.create({
+        icon: '<i class="icon marshal-icon"> </i>',
+        title: 'Маршал Сервис',
+        subtitle: 'Ошибка подключения',
+        text: 'Попробуйте повторить запрос позже.',
+        closeButton: true,
+    });
+
+    loading = this.$f7.progressbar;
+
     render() {
 
         return (
@@ -52,22 +88,23 @@ export default class extends React.Component {
                     attachmentsVisible={this.attachmentsVisible}
                     sheetVisible={this.state.sheetVisible}
                     change={() => {this.setState({sheetVisible: !this.state.sheetVisible})}}
-                    value={"Test message"}
-                    onChange={this.handleMessage.bind(this)}
+                    value={this.state.messageValue}
+                    //onChange={this.handleMessage.bind(this)}
+                    onInput={this.handleMessage.bind(this)}
                 >
-                    <Link
+                   {/* <Link
                         iconIos="f7:camera_fill"
                         iconMd="material:camera_alt"
                         slot="inner-start"
                         onClick={() => {this.setState({sheetVisible: !this.state.sheetVisible})}}
-                    />
+                    />*/}
                     <Link
                         iconIos="f7:arrow_up_fill"
                         iconMd="material:send"
                         slot="inner-end"
                         onClick={this.sendMessage.bind(this)}
                     />
-                    <MessagebarAttachments>
+                   {/* <MessagebarAttachments>
                         {this.state.attachments.map((image, index) => (
                             <MessagebarAttachment
                                 key={index}
@@ -85,7 +122,7 @@ export default class extends React.Component {
                                 onChange={this.handleAttachment.bind(this)}
                             />
                         ))}
-                    </MessagebarSheet>
+                    </MessagebarSheet>*/}
                 </Messagebar>
 
                 <Messages ref={(el) => {this.messagesComponent = el}}>
@@ -103,8 +140,8 @@ export default class extends React.Component {
                             last={this.isLastMessage(message, index)}
                             tail={this.isTailMessage(message, index)}
                         >
-                            {message.text && (
-                                <span slot="text" dangerouslySetInnerHTML={{__html: message.text}} />
+                            {message.message && (
+                                <span slot="text" dangerouslySetInnerHTML={{__html: message.message}} />
                             )}
                         </Message>
                     ))}
@@ -132,22 +169,35 @@ export default class extends React.Component {
         const self = this;
         return self.state.attachments.length > 0 ? 'Добавьте сообщение или отправьте' : 'Сообщение';
     }
+    updateMessages() {
+        const self = this;
+        if (self.props.response.messages.length) {
+            const messagesData = self.props.response.messages.map((item) => {
+                return {
+                    name: item.user.name,
+                    type: item.user_id === 1 ? 'sent' : 'received',
+                    message: item.message,
+                    date: item.updated_at,
+                }
+            });
+            self.setState({messagesData: messagesData});
+        }
+    }
+    componentWillReceiveProps() {
+        this.updateMessages();
+    }
     componentDidMount() {
         const self = this;
-        const messagesData = self.props.messages.map( (item) => {
-            return {
-                name: "user name " + item.user_id,
-                type: item.user_id === 1 ? 'sent' : 'received',
-                text: item.message,
-                date: item.updated_at,
-            }
-        });
-        self.setState({messagesData: messagesData});
-
+        this.updateMessages();
         self.$f7ready(() => {
             self.messagebar = self.messagebarComponent.f7Messagebar;
             self.messages = self.messagesComponent.f7Messages;
         });
+
+        this.intervalId = setInterval(()  => getMessages(self.props, self.answer_id, self.loading), 5000);
+    }
+    componentWillUnmount(){
+        clearInterval(this.intervalId);
     }
     isFirstMessage(message, index) {
         const self = this;
@@ -192,9 +242,10 @@ export default class extends React.Component {
         self.setState({ attachments });
     }
 
-    handleMessage(e) {
+    handleMessage() {
         const self = this;
-        console.log(e);
+        let text = self.messagebar.$textareaEl.val();
+        self.setState({messageValue: text});
     }
     sendMessage() {
         const self = this;
@@ -202,12 +253,21 @@ export default class extends React.Component {
         const messagesToSend = [];
         self.state.attachments.forEach((attachment) => {
             messagesToSend.push({
-                image: attachment,
+                answer_id: self.answer_id,
+                user_id: self.user.id,
+                name: self.user.name,
+                message: "",
+                attachment: attachment,
+                date: new Date(),
             });
         });
         if (text.trim().length) {
             messagesToSend.push({
-                text,
+                answer_id: self.answer_id,
+                user_id: self.user.id,
+                name: self.user.name,
+                message: text,
+                attachment: "",
                 date: new Date(),
             });
         }
@@ -216,6 +276,7 @@ export default class extends React.Component {
         }
 
         self.setState({
+            messageValue: '',
             // Reset attachments
             attachments: [],
             // Hide sheet
@@ -223,7 +284,10 @@ export default class extends React.Component {
             // Send message
             messagesData: [...self.state.messagesData, ...messagesToSend],
         });
-        self.messagebar.clear();
+
+        sendMessage(this.props, messagesToSend, this.notificationOffline).then(() => {
+            self.messagebar.clear();
+        });
 
         // Focus area
         if (text.length) self.messagebar.focus();
@@ -235,4 +299,19 @@ export default class extends React.Component {
         });
         */
     }
+}
+
+const mapStateToProps = store => {
+    return {
+        response: store.response[0],
+    }
 };
+
+const mapDispatchToProps = dispatch => {
+    return {
+        handleResponse: request => dispatch(handleResponse(request)),
+    }
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(respMessages)

@@ -3,12 +3,9 @@ import {
     Page,
     Navbar,
     Subnavbar,
-    Link,
     List,
     Icon,
     ListItem,
-    NavRight,
-    Block,
 } from 'framework7-react';
 
 import Messages from './Messages'
@@ -24,8 +21,7 @@ class ResponsePage extends Component {
     }
 
     render() {
-        const {response} = this.props;
-
+        const {response, user} = this.props;
         return (
             <Page>
                 <Navbar
@@ -35,9 +31,9 @@ class ResponsePage extends Component {
                     title="Предложение"
                     backLink="Back"
                 >
-                    <NavRight>
+                   {/* <NavRight>
                         <Link iconMd="material:chat" href={"/messages/"}/>
-                    </NavRight>
+                    </NavRight>*/}
                     <Subnavbar
                         inner={false}
                         className={"no-padding"}
@@ -63,12 +59,7 @@ class ResponsePage extends Component {
                         </List>
                     </Subnavbar>
                 </Navbar>
-                {
-                    (response.messages.length > 0) ?
-                        <Messages messages={response.messages}/>
-                        :
-                        <Block>Здесь вы можете уточнить детали запроса.</Block>
-                }
+                <Messages user={user}/>
             </Page>
         );
     }
@@ -79,6 +70,7 @@ const mapStateToProps = store => {
     return {
         response: store.response[0],
         shops: store.stores.shops,
+        user: store.user,
     }
 };
 

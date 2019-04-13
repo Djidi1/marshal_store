@@ -59,7 +59,7 @@ class RequestsPage extends React.Component {
             <React.Fragment>
                 <BlockTitle
                     style={{whiteSpace: 'initial'}}
-                >Здесь вы можете подать заявку на подбор необходимого вам атотовара или запчасти.</BlockTitle>
+                >Здесь вы можете подать заявку на подбор необходимого вам автотовара или запчасти.</BlockTitle>
                 <List
                     mediaList
                     className={"no-margin"}

@@ -33,9 +33,9 @@ class initApplication {
         let detect = new Detector();
         if (detect.state.online) {
             let get_data = new getData();
-            get_data.data('shops').then(value => value !== undefined && props.handleShops(value));
-            get_data.data('categories').then(value => value !== undefined && props.handleCategories(value));
-            get_data.data('userRequests').then(value => value !== undefined && props.handleRequests(value));
+            await get_data.data('shops').then(value => value !== undefined && props.handleShops(value));
+            await get_data.data('categories').then(value => value !== undefined && props.handleCategories(value));
+            await get_data.data('userRequests').then(value => value !== undefined && props.handleRequests(value));
             // get_data.data('answers').then(value => value !== undefined && props.handleAnswers(value));
         } else {
             // from idb
@@ -59,7 +59,7 @@ class HomePage extends React.Component {
     async componentDidMount() {
         this.$f7.dialog.preloader('Загрузка...');
         const initApp = new initApplication();
-        await initApp.init(this.props).then();
+        await initApp.init(this.props);
         this.$f7.dialog.close();
     }
 
