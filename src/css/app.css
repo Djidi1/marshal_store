@@ -28,10 +28,10 @@ i.icon.status-icon {
     vertical-align: bottom;
 }
 
-.messages-block {
-    height: calc(100vh - calc(var(--f7-subnavbar-height)));
+/*.messages-block {*/
+    /*height: calc(100vh - calc(var(--f7-subnavbar-height)));*/
     /*margin-top: calc(var(--f7-subnavbar-height));*/
-}
+/*}*/
 .messages-title, .message {
     margin-bottom: var(--f7-message-margin);
 }

@@ -2,7 +2,7 @@
   "name": "marshal-service",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://djidi1.github.io/marshal",
+  "homepage": ".",
   "dependencies": {
     "axios": "^0.18.0",
     "framework7": "^4.2.0",
@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && rm -R ../marshal_app/www/* && cp -R build/* ../marshal_app/www/",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "copy-fonts": "cpy node_modules/framework7-icons/fonts/*.* src/fonts && cpy node_modules/material-design-icons/iconfont/*.{eot,ttf,woff,woff2} src/fonts",
