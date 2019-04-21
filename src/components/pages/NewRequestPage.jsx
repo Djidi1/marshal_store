@@ -31,9 +31,14 @@ class NewRequestPage extends Component {
         this.setState({ selected_shops: shops, shop_id: shops[0] });
     };
 
-
     handleData = (name, value) => {
         this.setState({[name]: value});
+    };
+
+    handleCarData = (value) => {
+        const car_id = Number(value);
+        const vin = car_id > 0 ? this.props.cars.find(car => car.id === car_id).vin : '';
+        this.setState({car_id: car_id, vin: vin});
     };
 
     set_stores = () => {
@@ -67,8 +72,8 @@ class NewRequestPage extends Component {
     });
 
     render() {
-        const {selected_shops} = this.state;
-        const {shops, categories} = this.props;
+        const {selected_shops, vin} = this.state;
+        const {shops, categories, cars, brands, models} = this.props;
         const selectedShops = shops.filter(x => selected_shops.indexOf(x.id) !== -1);
 
         return (
@@ -108,11 +113,18 @@ class NewRequestPage extends Component {
                         label="Автомобиль"
                         type="select"
                         placeholder="Выберите..."
-                        onChange={(event) => this.handleData('car_id', event.target.value)}
+                        onChange={(event) => this.handleCarData( event.target.value)}
                     >
                         <option key={0} value={null}>Выберите...</option>
-                        <option value="1">Mercedes</option>
-                        <option value="2">BMW</option>
+                        {
+                            cars.map(car => (
+                                <option
+                                    key={'car_'+car.id}
+                                    value={car.id}
+                                >{brands.find(brand => brand.id === car.car_brand_id).car_brand
+                                + ' ' + models.find(model => model.id === car.car_model_id).car_model}</option>
+                            ))
+                        }
                     </ListInput>
                     <ListInput
                         outline
@@ -120,6 +132,7 @@ class NewRequestPage extends Component {
                         floatingLabel
                         type="text"
                         placeholder="Для более быстрого поиска запчасти введите VIN номер автомобиля"
+                        value={vin}
                         onChange={(event) => this.handleData('vin', event.target.value)}
                     />
                     <ListInput
@@ -168,6 +181,9 @@ class NewRequestPage extends Component {
 const mapStateToProps = store => {
     return {
         user: store.user,
+        cars: store.cars,
+        models: store.carmodels,
+        brands: store.carbrands,
         requests: store.requests,
         shops: store.stores.shops,
         categories: store.stores.categories,
