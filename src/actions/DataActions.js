@@ -6,6 +6,8 @@ export const ADD_REQUESTS = 'ADD_REQUESTS';
 export const RESPONSE = 'RESPONSE';
 export const CARS = 'CARS';
 export const ADD_CAR = 'ADD_CAR';
+export const UPDATE_CAR = 'UPDATE_CAR';
+export const DELETE_CAR = 'DELETE_CAR';
 export const CAR_BRANDS = 'CAR_BRANDS';
 export const CAR_MODELS = 'CAR_MODELS';
 
@@ -61,6 +63,22 @@ export function handleAddCar(payload) {
     return function(dispatch) {
         dispatch({
             type: ADD_CAR,
+            payload: payload,
+        })
+    }
+}
+export function handleUpdateCar(payload) {
+    return function(dispatch) {
+        dispatch({
+            type: UPDATE_CAR,
+            payload: payload,
+        })
+    }
+}
+export function handleDeleteCar(payload) {
+    return function(dispatch) {
+        dispatch({
+            type: DELETE_CAR,
             payload: payload,
         })
     }
