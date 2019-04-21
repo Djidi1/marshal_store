@@ -5,6 +5,7 @@ import DynamicRoutePage from './components/pages/DynamicRoutePage';
 import NotFoundPage from './components/pages/NotFoundPage';
 import PanelLeftPage from './components/pages/PanelLeftPage';
 import PanelRightPage from './components/pages/PanelRightPage';
+import NewCarPage from "./components/pages/NewCarPage";
 import NewRequestPage from "./components/pages/NewRequestPage";
 import ResponsesPage from "./components/pages/ResponsesPage";
 import ResponsePage from "./components/pages/ResponsePage";
@@ -53,6 +54,10 @@ export default [
     {
         path: '/open_request/:reqId/',
         component: NewRequestPage,
+    },
+    {
+        path: '/open_car/:carId/',
+        component: NewCarPage,
     },
     {
         path: '/requests/:reqId/',

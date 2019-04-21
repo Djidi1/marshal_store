@@ -3,7 +3,9 @@ import { userReducer } from './user'
 import { storesReducer } from './stores'
 import { requestsReducer } from './requests'
 import { requestReducer } from './request'
-import { answersReducer } from './answers'
+import { carsReducer } from './cars'
+import { carModelsReducer } from './carmodels'
+import { carBrandsReducer } from './carbrands'
 import { responseReducer } from './response'
 import { stoReducer } from './sto'
 
@@ -14,5 +16,7 @@ export const rootReducer = combineReducers({
     requests: requestsReducer,
     request: requestReducer,
     response: responseReducer,
-    answers: answersReducer,
+    cars: carsReducer,
+    carbrands: carBrandsReducer,
+    carmodels: carModelsReducer,
 });

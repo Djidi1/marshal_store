@@ -3,8 +3,11 @@ export const CATEGORIES_REQUEST = 'CATEGORIES_REQUEST';
 export const REQUESTS = 'REQUESTS';
 export const REQUEST = 'REQUEST';
 export const ADD_REQUESTS = 'ADD_REQUESTS';
-export const ANSWERS = 'ANSWERS';
 export const RESPONSE = 'RESPONSE';
+export const CARS = 'CARS';
+export const ADD_CAR = 'ADD_CAR';
+export const CAR_BRANDS = 'CAR_BRANDS';
+export const CAR_MODELS = 'CAR_MODELS';
 
 export function handleShops(callback) {
     return function(dispatch) {
@@ -54,10 +57,34 @@ export function handleAddRequests(payload) {
         })
     }
 }
-export function handleAnswers(payload) {
+export function handleAddCar(payload) {
     return function(dispatch) {
         dispatch({
-            type: ANSWERS,
+            type: ADD_CAR,
+            payload: payload,
+        })
+    }
+}
+export function handleCars(payload) {
+    return function(dispatch) {
+        dispatch({
+            type: CARS,
+            payload: payload,
+        })
+    }
+}
+export function handleCarBrands(payload) {
+    return function(dispatch) {
+        dispatch({
+            type: CAR_BRANDS,
+            payload: payload,
+        })
+    }
+}
+export function handleCarModels(payload) {
+    return function(dispatch) {
+        dispatch({
+            type: CAR_MODELS,
             payload: payload,
         })
     }

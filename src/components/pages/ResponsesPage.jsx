@@ -9,7 +9,6 @@ import {get} from "idb-keyval";
 import {
     Page,
     Navbar,
-    Subnavbar,
     List,
     Icon,
     ListItem,
@@ -57,31 +56,28 @@ class ResponsesPage extends Component {
                     title="Предложения"
                     backLink="Back"
                 >
-                    <Subnavbar
-                        inner={false}
-                        className={"no-padding"}
+                </Navbar>
+                <List
+                    mediaList
+                    className={"no-margin list-title"}
+                >
+                    <ListItem
+                        swipeout
+                        after={request.created_at.toLocaleString()}
+                        subtitle={"Предложений: " + (request.answers.length || 0) + ""}
+                        text={request.text}
                     >
-                        <List
-                            mediaList
-                            className={"no-margin list-request"}
-                        >
-                            <ListItem
-                                swipeout
-                                after={request.created_at.toLocaleString()}
-                                subtitle={"Предложений: " + (request.answers.length || 0) + ""}
-                                text={request.text}
-                            >
                                 <span slot="title">
                                     <Icon className={"status-icon"} material="access_time" color="blue"/>
                                     {this.get_category(request.category_id)}
                                 </span>
-                            </ListItem>
-                        </List>
-                    </Subnavbar>
-                </Navbar>
+                    </ListItem>
+                </List>
+
                 <List
                     mediaList
                     noHairlinesMd
+                    className={"list-with-header"}
                 >
                     {/*
 created_at: "2019-04-09 00:00:00"

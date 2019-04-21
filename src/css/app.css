@@ -1,6 +1,7 @@
 /* Your app styles here */
 * {
-    --f7-subnavbar-height: 94px;
+    /*--f7-subnavbar-height: auto;*/
+    --f7-navbar-bg-color: #cb2128;
     --f7-color-red: #cb2128;
     --f7-color-red-rgb: 203, 33, 40;
     --f7-color-red-shade: #c32128;
@@ -8,7 +9,9 @@
     --f7-theme-color-bg-color: #cb2128;
     --f7-theme-color: #cb2128;
     --f7-bars-link-color: #ffffff;
+    --f7-navbar-text-color: #ffffff;
     --f7-message-footer-font-size: 10px;
+    --f7-toolbar-link-color: #cb2128;
 
 }
 
@@ -39,6 +42,27 @@ i.icon.status-icon {
 .list-request, .list-request ul{
     height: 100%;
     width: 100%;
+}
+.list-with-header {
+    padding-top: 94px;
+}
+.list-title.list {
+    position: fixed;
+    top: var(--f7-navbar-height);
+    display: block;
+    z-index: 100;
+    width: 100vw;
+}
+.list-title:before {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 100%;
+    top: 100%;
+    bottom: auto;
+    height: 8px;
+    pointer-events: none;
+    background: var(--f7-navbar-shadow-image);
 }
 
 h1 {

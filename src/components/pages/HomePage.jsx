@@ -22,7 +22,14 @@ import STOPage from './STOPage';
 
 import {getData} from '../../axios/getData'
 import {handleLogin} from "../../actions/UserActions";
-import {handleCategories, handleShops, handleRequests, handleAnswers} from "../../actions/DataActions";
+import {
+    handleCategories,
+    handleShops,
+    handleRequests,
+    handleCars,
+    handleCarBrands,
+    handleCarModels,
+} from "../../actions/DataActions";
 
 // Load data from indexedDB to Store
 class initApplication {
@@ -36,13 +43,17 @@ class initApplication {
             await get_data.data('shops').then(value => value !== undefined && props.handleShops(value));
             await get_data.data('categories').then(value => value !== undefined && props.handleCategories(value));
             await get_data.data('userRequests').then(value => value !== undefined && props.handleRequests(value));
-            // get_data.data('answers').then(value => value !== undefined && props.handleAnswers(value));
+            await get_data.data('cars').then(value => value !== undefined && props.handleCars(value));
+            await get_data.data('carbrands').then(value => value !== undefined && props.handleCarBrands(value));
+            await get_data.data('carmodels').then(value => value !== undefined && props.handleCarModels(value));
         } else {
             // from idb
             await get('shops').then(value => value !== undefined && props.handleShops(value));
             await get('categories').then(value => value !== undefined && props.handleCategories(value));
             await get('userRequests').then(value => value !== undefined && props.handleRequests(value));
-            // await get('answers').then(value => value !== undefined && props.handleAnswers(value));
+            await get('cars').then(value => value !== undefined && props.handleCars(value));
+            await get('carbrands').then(value => value !== undefined && props.handleCarBrands(value));
+            await get('carmodels').then(value => value !== undefined && props.handleCarModels(value));
         }
     }
 }
@@ -144,7 +155,9 @@ const mapDispatchToProps = dispatch => {
         handleShops: shops => dispatch(handleShops(shops)),
         handleCategories: categories => dispatch(handleCategories(categories)),
         handleRequests: requests => dispatch(handleRequests(requests)),
-        handleAnswers: answers => dispatch(handleAnswers(answers)),
+        handleCars: cars => dispatch(handleCars(cars)),
+        handleCarBrands: brands => dispatch(handleCarBrands(brands)),
+        handleCarModels: models => dispatch(handleCarModels(models)),
     }
 };
 

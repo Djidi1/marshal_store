@@ -15,7 +15,6 @@ import {
     List,
     ListItem,
     Navbar,
-    Subnavbar,
     // NavRight
 } from 'framework7-react';
 import {Detector} from "react-detect-offline";
@@ -102,32 +101,26 @@ class respMessages extends React.Component {
                     bgColor="main"
                     title="Предложение"
                     backLink="Back"
+                />
+                <List
+                    mediaList
+                    className={"no-margin list-title"}
                 >
-                    <Subnavbar
-                        inner={false}
-                        className={"no-padding"}
+                    <ListItem
+                        key={response.id}
+                        onClick={() => this.open_response(response.id)}
+                        after={response.created_at.toLocaleString()}
+                        subtitle={this.get_shop(response.shop_id)}
+                        text={response.description}
                     >
-                        <List
-                            mediaList
-                            className={"no-margin list-request"}
-                        >
-                            <ListItem
-                                key={response.id}
-                                onClick={() => this.open_response(response.id)}
-                                after={response.created_at.toLocaleString()}
-                                subtitle={this.get_shop(response.shop_id)}
-                                text={response.description}
-                            >
-                                <b slot="title">
-                                    {
-                                        response.is_new ? <Icon className={"status-icon"} material="fiber_new"
-                                                                color="green"/> : null
-                                    }
-                                    {response.price}</b>
-                            </ListItem>
-                        </List>
-                    </Subnavbar>
-                </Navbar>
+                        <b slot="title">
+                            {
+                                response.is_new ? <Icon className={"status-icon"} material="fiber_new"
+                                                        color="green"/> : null
+                            }
+                            {response.price}</b>
+                    </ListItem>
+                </List>
                 <Messagebar
                     placeholder={this.placeholder}
                     ref={(el) => {this.messagebarComponent = el}}
@@ -171,7 +164,10 @@ class respMessages extends React.Component {
                     </MessagebarSheet>*/}
                 </Messagebar>
 
-                <Messages ref={(el) => {this.messagesComponent = el}}>
+                <Messages
+                    className={"list-with-header"}
+                    ref={(el) => {this.messagesComponent = el}}
+                >
                     {/*<MessagesTitle><b>Sunday, Feb 9,</b> 12:58</MessagesTitle>*/}
 
                     {this.state.messagesData.map((message, index) => (
