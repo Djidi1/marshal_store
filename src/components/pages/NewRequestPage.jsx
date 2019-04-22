@@ -12,7 +12,11 @@ import {
 import connect from "react-redux/es/connect/connect";
 
 import {setData} from "../../axios/setData";
-import {handleAddRequests} from "../../actions/DataActions";
+import {
+    handleAddRequests,
+    handleUpdateRequest,
+   // handleDeleteRequest
+} from "../../actions/DataActions";
 
 class NewRequestPage extends Component {
     constructor() {
@@ -20,10 +24,10 @@ class NewRequestPage extends Component {
         this.state = {
             selected_shops: [],
             shop_id: null,
-            category_id: null,
-            car_id: null,
-            vin: null,
-            text: null,
+            category_id: 0,
+            car_id: 0,
+            vin: '',
+            text: '',
         }
     }
 
@@ -51,15 +55,23 @@ class NewRequestPage extends Component {
         });
     };
 
-    sendRequest = () => {
+    sendRequest = (req_id) => {
         let req_data = {...this.state};
         delete req_data.selected_shops;
         req_data["user_id"] = this.props.user.id;
         const set_data = new setData();
-        set_data.data('request-add',req_data).then(data => {
-            this.props.handleAddRequests(data.result);
-        });
-        this.addRequestSuccess.open();
+        if (req_id > 0) {
+            set_data.dataPut('request-update/'+req_id, req_data).then(() => {
+                req_data["id"] = req_id;
+                this.props.handleUpdateRequest(req_data);
+                this.updateRequestSuccess.open();
+            });
+        } else {
+            set_data.data('request-add', req_data).then(data => {
+                this.props.handleAddRequests(data.result);
+                this.addRequestSuccess.open();
+            });
+        }
         this.$f7.views.main.router.navigate('/');
     };
 
@@ -70,11 +82,35 @@ class NewRequestPage extends Component {
         text: 'В ближайшее время вам ответят.',
         closeTimeout: 3000,
     });
+    updateRequestSuccess = this.$f7.notification.create({
+        icon: '<i class="icon marshal-icon"> </i>',
+        title: 'Маршал Сервис',
+        subtitle: 'Заявка обновлена',
+        closeTimeout: 3000,
+    });
+
+    componentDidMount() {
+        const initData = {};
+        const req_id = Number(this.$f7route.params.reqId);
+
+        if (req_id > 0) {
+            const request = this.props.requests.find(request => request.id === req_id);
+            // Set data to local state
+            initData.category_id = request.category_id;
+            initData.car_id = request.car_id;
+            initData.vin = request.vin;
+            initData.text = request.text;
+            initData.shop_id = request.shop_id;
+            initData.selected_shops = [request.shop_id];
+            this.setState(initData);
+        }
+    }
 
     render() {
-        const {selected_shops, vin} = this.state;
+        const {selected_shops, category_id, car_id, vin, text} = this.state;
         const {shops, categories, cars, brands, models} = this.props;
         const selectedShops = shops.filter(x => selected_shops.indexOf(x.id) !== -1);
+        const req_id = this.$f7route.params.reqId;
 
         return (
             <Page>
@@ -82,16 +118,10 @@ class NewRequestPage extends Component {
                     color="white"
                     textColor="white"
                     bgColor="main"
-                    title={this.$f7route.params.reqId > 0 ? "Редактировать заявку" : "Новая заявка"}
+                    title={req_id > 0 ? "Редактировать заявку" : "Новая заявка"}
                     backLink="Back"
                 >
                 </Navbar>
-                {/*
-                даты формирования заявки,
-                текста,
-                марки и модели автомобиля,
-                количества ответов магазинов
-                */}
                 <BlockTitle
                     style={{whiteSpace: 'initial'}}
                 >Здесь вы можете оставить заявку на подбор необходимой вам запчасти или услуги.</BlockTitle>
@@ -100,6 +130,7 @@ class NewRequestPage extends Component {
                         label="Категория товара"
                         type="select"
                         placeholder="Выберите..."
+                        value={category_id}
                         onChange={(event) => this.handleData('category_id', event.target.value)}
                     >
                         <option key={0} value={null}>Выберите...</option>
@@ -113,6 +144,7 @@ class NewRequestPage extends Component {
                         label="Автомобиль"
                         type="select"
                         placeholder="Выберите..."
+                        value={car_id}
                         onChange={(event) => this.handleCarData( event.target.value)}
                     >
                         <option key={0} value={null}>Выберите...</option>
@@ -141,6 +173,7 @@ class NewRequestPage extends Component {
                         floatingLabel
                         type="textarea"
                         placeholder="Дополнительная информация о требуемом товаре..."
+                        value={text}
                         onChange={(event) => this.handleData('text', event.target.value)}
                     />
 
@@ -169,8 +202,8 @@ class NewRequestPage extends Component {
                 <Block>
                     <Button
                         fill
-                        onClick={this.sendRequest}
-                    >Отправить заявку</Button>
+                        onClick={() => this.sendRequest(req_id)}
+                    >{req_id > 0 ? 'Сохранить изменения' : 'Отправить заявку'}</Button>
                 </Block>
             </Page>
         );
@@ -193,6 +226,7 @@ const mapStateToProps = store => {
 const mapDispatchToProps = dispatch => {
     return {
         handleAddRequests: data => dispatch(handleAddRequests(data)),
+        handleUpdateRequest: data => dispatch(handleUpdateRequest(data)),
     }
 };
 

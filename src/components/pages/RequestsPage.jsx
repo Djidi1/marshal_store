@@ -1,7 +1,9 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {handleRequest} from "../../actions/DataActions";
 import {getData} from "../../axios/getData";
+import {setData} from "../../axios/setData";
+import {handleRequest,handleDeleteRequest} from "../../actions/DataActions";
+
 import {Detector} from "react-detect-offline";
 import {get} from "idb-keyval";
 import {
@@ -30,6 +32,20 @@ class RequestsPage extends React.Component {
         this.state = {};
     }
 
+    deleteRequest = (req_id) => {
+        const set_data = new setData();
+        if (req_id > 0) {
+            set_data.dataDelete('request-detele/'+req_id).then(() => {
+                this.props.handleDeleteRequest(req_id);
+            });
+        }
+    };
+
+    deleteHandle(req_id) {
+        const app = this.$f7;
+        app.dialog.confirm('Эта операция необратима', 'Удалить заявку?', () => this.deleteRequest(req_id), () => {});
+    }
+
     edit_request(reqId) {
         const app = this.$f7;
         app.views.main.router.navigate('open_request/' + reqId + '/');
@@ -41,11 +57,6 @@ class RequestsPage extends React.Component {
             this.$f7.views.main.router.navigate('requests/' + reqId + '/');
             this.$f7.dialog.close();
         });
-    }
-
-    reply() {
-        const app = this.$f7;
-        app.dialog.alert('Reply');
     }
 
     get_category(cat_id) {
@@ -92,12 +103,8 @@ class RequestsPage extends React.Component {
                                         </SwipeoutButton>
                                     </SwipeoutActions>
                                     <SwipeoutActions right>
-                                        <SwipeoutButton
-                                            color="orange"
-                                            onClick={this.reply.bind(this)}
-                                            confirmText="Подтвердите отмену вашей заявки"
-                                        >
-                                            <Icon material="delete"/> Отменить заявку
+                                        <SwipeoutButton color="#cb2128" onClick={() => this.deleteHandle(item.id)}>
+                                            <Icon material="delete"/> Удалить
                                         </SwipeoutButton>
                                     </SwipeoutActions>
                                 </ListItem>
@@ -120,6 +127,7 @@ const mapStateToProps = store => {
 const mapDispatchToProps = dispatch => {
     return {
         handleRequest: request => dispatch(handleRequest(request)),
+        handleDeleteRequest: data => dispatch(handleDeleteRequest(data)),
     }
 };
 

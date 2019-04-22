@@ -20,7 +20,6 @@ export function carsReducer(state = initialState, action) {
             return newState;
         case DELETE_CAR:
             const car_id = action.payload;
-            console.log('delete', car_id);
             newState = [...state];
             carIndex = newState.findIndex((car => car.id === car_id));
             newState.splice(carIndex, 1);

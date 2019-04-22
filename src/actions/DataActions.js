@@ -2,7 +2,9 @@ export const SHOPS_REQUEST = 'SHOPS_REQUEST';
 export const CATEGORIES_REQUEST = 'CATEGORIES_REQUEST';
 export const REQUESTS = 'REQUESTS';
 export const REQUEST = 'REQUEST';
-export const ADD_REQUESTS = 'ADD_REQUESTS';
+export const ADD_REQUEST = 'ADD_REQUEST';
+export const UPDATE_REQUEST = 'UPDATE_REQUEST';
+export const DELETE_REQUEST = 'DELETE_REQUEST';
 export const RESPONSE = 'RESPONSE';
 export const CARS = 'CARS';
 export const ADD_CAR = 'ADD_CAR';
@@ -54,7 +56,23 @@ export function handleResponse(payload) {
 export function handleAddRequests(payload) {
     return function(dispatch) {
         dispatch({
-            type: ADD_REQUESTS,
+            type: ADD_REQUEST,
+            payload: payload,
+        })
+    }
+}
+export function handleUpdateRequest(payload) {
+    return function(dispatch) {
+        dispatch({
+            type:  UPDATE_REQUEST,
+            payload: payload,
+        })
+    }
+}
+export function handleDeleteRequest(payload) {
+    return function(dispatch) {
+        dispatch({
+            type:  DELETE_REQUEST,
             payload: payload,
         })
     }
