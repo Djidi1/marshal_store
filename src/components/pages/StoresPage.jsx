@@ -9,16 +9,33 @@ import {
     AccordionContent,
     BlockTitle,
 } from 'framework7-react';
+import {setData} from "../../axios/setData";
+import {getData} from "../../axios/getData";
+import {handleFavoriteShops} from "../../actions/DataActions";
 
 class StoresPage extends React.Component {
+    toFavorite = (shop_id) => {
+        const set_data = new setData();
+        const get_data = new getData();
+        if (shop_id > 0) {
+            set_data.dataPut('favorite-shop-add/'+shop_id, {}).then(async () => {
+                await get_data.data('favorite-shops').then(value => value !== undefined && this.props.handleFavoriteShops(value.result));
+                // todo брать с сервера ответ с магазином, который был добавлен в избранное
+                //this.props.handleFavoriteShopAdd(shop_id);
+                this.addFSSuccess.open();
+            });
+        }
+    };
 
-    forward() {
-        const app = this.$f7;
-        app.dialog.alert('Магазин добавлен в избранные', 'Избранное');
-    }
+    addFSSuccess = this.$f7.notification.create({
+        icon: '<i class="icon marshal-icon"> </i>',
+        title: 'Маршал Сервис',
+        subtitle: 'Магазин добавлен в избранные',
+        closeTimeout: 3000,
+    });
 
     render() {
-        const {stores, categories} = this.props;
+        const {shops, categories} = this.props;
         return (
             <React.Fragment>
                 <BlockTitle>Выберите интересующую вас категорию автотоваров:</BlockTitle>
@@ -37,8 +54,8 @@ class StoresPage extends React.Component {
                                         mediaList
                                         className={"no-margin"}
                                     >
-                                        {
-                                            stores.filter(x => x.categories.find(y => y.id === cat.id)).map(item =>
+                                        { (shops.length) ?
+                                            shops.filter(x => x.categories.find(y => y.id === cat.id)).map(item =>
                                                 <ListItem
                                                     key={item.id}
                                                     swipeout
@@ -51,12 +68,13 @@ class StoresPage extends React.Component {
                                                               color="green"/> {item.name}
                                                     </span>
                                                     <SwipeoutActions left>
-                                                        <SwipeoutButton color="blue" onClick={this.forward.bind(this)}>
+                                                        <SwipeoutButton color="blue" onClick={() => this.toFavorite(item.id)}>
                                                             <Icon material="favorite"/> В избранное
                                                         </SwipeoutButton>
                                                     </SwipeoutActions>
                                                 </ListItem>
                                             )
+                                            : null
                                         }
                                     </List>
                                 </AccordionContent>
@@ -71,9 +89,15 @@ class StoresPage extends React.Component {
 
 const mapStateToProps = store => {
     return {
-        stores: store.stores.shops,
+        shops: store.stores.shops,
         categories: store.stores.categories,
     }
 };
 
-export default connect(mapStateToProps)(StoresPage)
+const mapDispatchToProps = dispatch => {
+    return {
+        handleFavoriteShops: data => dispatch(handleFavoriteShops(data)),
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StoresPage)

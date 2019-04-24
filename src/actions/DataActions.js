@@ -1,4 +1,7 @@
 export const SHOPS_REQUEST = 'SHOPS_REQUEST';
+export const SHOPS_FAVORITE = 'SHOPS_FAVORITE';
+export const SHOPS_ADD_FAVORITE = 'SHOPS_ADD_FAVORITE';
+export const SHOPS_DELETE_FAVORITE = 'SHOPS_DELETE_FAVORITE';
 export const CATEGORIES_REQUEST = 'CATEGORIES_REQUEST';
 export const REQUESTS = 'REQUESTS';
 export const REQUEST = 'REQUEST';
@@ -17,6 +20,30 @@ export function handleShops(callback) {
     return function(dispatch) {
         dispatch({
             type: SHOPS_REQUEST,
+            payload: callback,
+        })
+    }
+}
+export function handleFavoriteShops(callback) {
+    return function(dispatch) {
+        dispatch({
+            type: SHOPS_FAVORITE,
+            payload: callback,
+        })
+    }
+}
+export function handleFavoriteShopAdd(callback) {
+    return function(dispatch) {
+        dispatch({
+            type: SHOPS_ADD_FAVORITE,
+            payload: callback,
+        })
+    }
+}
+export function handleFavoriteShopDelete(callback) {
+    return function(dispatch) {
+        dispatch({
+            type: SHOPS_DELETE_FAVORITE,
             payload: callback,
         })
     }

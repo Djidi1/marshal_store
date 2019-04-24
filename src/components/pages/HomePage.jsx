@@ -18,13 +18,14 @@ import {
 import RequestsPage from './RequestsPage';
 import StoresPage from './StoresPage';
 import SettingsPage from './SettingsPage';
-import STOPage from './STOPage';
+import FavoritesPage from "./FavoritesPage";
 
 import {getData} from '../../axios/getData'
 import {handleLogin} from "../../actions/UserActions";
 import {
     handleCategories,
     handleShops,
+    handleFavoriteShops,
     handleRequests,
     handleCars,
     handleCarBrands,
@@ -41,6 +42,7 @@ class initApplication {
         if (detect.state.online) {
             let get_data = new getData();
             await get_data.data('shops').then(value => value !== undefined && props.handleShops(value));
+            await get_data.data('favorite-shops').then(value => value !== undefined && props.handleFavoriteShops(value.result));
             await get_data.data('categories').then(value => value !== undefined && props.handleCategories(value));
             await get_data.data('userRequests').then(value => value !== undefined && props.handleRequests(value));
             await get_data.data('cars').then(value => value !== undefined && props.handleCars(value));
@@ -49,6 +51,7 @@ class initApplication {
         } else {
             // from idb
             await get('shops').then(value => value !== undefined && props.handleShops(value));
+            await get('favorite-shops').then(value => value !== undefined && props.handleFavoriteShops(value.result));
             await get('categories').then(value => value !== undefined && props.handleCategories(value));
             await get('userRequests').then(value => value !== undefined && props.handleRequests(value));
             await get('cars').then(value => value !== undefined && props.handleCars(value));
@@ -111,7 +114,7 @@ class HomePage extends React.Component {
                     <Link tabLink="#new" onClick={() => this.new_request(0)} text=" " >
                         <Icon material="add"/>
                     </Link>
-                    <Link tabLink="#sto" onClick={() => this.chgTitle('СТО')} text="СТО" iconMd="material:build"/>
+                    <Link tabLink="#favorites" onClick={() => this.chgTitle('Избранное')} text="Избранное" iconMd="material:favorite"/>
                     <Link tabLink="#person" onClick={() => this.chgTitle('Личный Кабинет')} text="Кабинет" iconMd="material:person"/>
                 </Toolbar>
                 <Fab
@@ -131,8 +134,8 @@ class HomePage extends React.Component {
                     <Tab id="stores" className="page-content">
                         <StoresPage/>
                     </Tab>
-                    <Tab id="sto" className="page-content">
-                        <STOPage/>
+                    <Tab id="favorites" className="page-content">
+                        <FavoritesPage/>
                     </Tab>
                     <Tab id="person" className="page-content">
                         <SettingsPage/>
@@ -153,6 +156,7 @@ const mapDispatchToProps = dispatch => {
     return {
         handleLogin: user => dispatch(handleLogin(user)),
         handleShops: shops => dispatch(handleShops(shops)),
+        handleFavoriteShops: shops => dispatch(handleFavoriteShops(shops)),
         handleCategories: categories => dispatch(handleCategories(categories)),
         handleRequests: requests => dispatch(handleRequests(requests)),
         handleCars: cars => dispatch(handleCars(cars)),
