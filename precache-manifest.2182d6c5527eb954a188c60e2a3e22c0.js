@@ -40,12 +40,12 @@ self.__precacheManifest = [
     "url": "/marshal_store/static/media/MaterialIcons-Regular.012cf6a1.woff"
   },
   {
-    "revision": "61bbf26d99172b62fb8eb5b03585db72",
-    "url": "/marshal_store/static/media/Framework7Icons-Regular.61bbf26d.ttf"
-  },
-  {
     "revision": "d5e7e689e790dd5f60eaa438da65581f",
     "url": "/marshal_store/static/media/Framework7Icons-Regular.d5e7e689.eot"
+  },
+  {
+    "revision": "61bbf26d99172b62fb8eb5b03585db72",
+    "url": "/marshal_store/static/media/Framework7Icons-Regular.61bbf26d.ttf"
   },
   {
     "revision": "a37b0c01c0baf1888ca812cc0508f6e2",
