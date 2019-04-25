@@ -7,71 +7,57 @@ import {
     Block,
     BlockTitle,
     Button,
-    Chip,
+    ListItem,
+    Toggle,
+    Icon,
 } from 'framework7-react';
 import connect from "react-redux/es/connect/connect";
 
 import {setData} from "../../axios/setData";
-import {
+
+/*import {
     handleAddRequests,
     handleUpdateRequest,
    // handleDeleteRequest
-} from "../../actions/DataActions";
+} from "../../actions/DataActions";*/
 
+/*
+        'request_id',
+        'status_id',
+        'shop_id',
+        'user_id',
+        'price',
+        'is_new',
+        'description'
+ */
 class NewRequestPage extends Component {
     constructor() {
         super();
         this.state = {
-            selected_shops: [],
-            shop_id: null,
-            category_id: 0,
-            car_id: 0,
-            vin: '',
-            text: '',
+            request_id: null,
+            status_id: 1,
+            shop_id: 0,
+            user_id: 0,
+            price: '',
+            is_new: true,
+            description: '',
+            request: {created_at: new Date()},
         }
     }
-
-    handleShops = (shops) => {
-        this.setState({ selected_shops: shops, shop_id: shops[0] });
-    };
 
     handleData = (name, value) => {
         this.setState({[name]: value});
     };
 
-    handleCarData = (value) => {
-        const car_id = Number(value);
-        const vin = car_id > 0 ? this.props.cars.find(car => car.id === car_id).vin : '';
-        this.setState({car_id: car_id, vin: vin});
-    };
-
-    set_stores = () => {
-        const app = this.$f7;
-        app.views.main.router.navigate('/stores_list/', {
-            props: {
-                handleShops: this.handleShops,
-                selected_shops: this.state.selected_shops
-            }
-        });
-    };
-
-    sendRequest = (req_id) => {
+    sendAnswer = () => {
         let req_data = {...this.state};
-        delete req_data.selected_shops;
-        req_data["user_id"] = this.props.user.id;
+        delete req_data.request;
         const set_data = new setData();
-        if (req_id > 0) {
-            set_data.dataPut('request-update/'+req_id, req_data).then(() => {
-                req_data["id"] = req_id;
-                this.props.handleUpdateRequest(req_data);
-                this.updateRequestSuccess.open();
-            });
-        } else {
-            set_data.data('request-add', req_data).then(data => {
-                this.props.handleAddRequests(data.result);
-                this.addRequestSuccess.open();
-            });
-        }
+        set_data.data('answer-add', req_data).then(data => {
+            console.log(data.result);
+            //this.props.handleAddRequests(data.result);
+            this.addRequestSuccess.open();
+        });
         this.$f7.views.main.router.navigate('/');
     };
 
@@ -82,35 +68,28 @@ class NewRequestPage extends Component {
         text: 'В ближайшее время вам ответят.',
         closeTimeout: 3000,
     });
-    updateRequestSuccess = this.$f7.notification.create({
-        icon: '<i class="icon marshal-icon"> </i>',
-        title: 'Маршал Сервис',
-        subtitle: 'Заявка обновлена',
-        closeTimeout: 3000,
-    });
+
+    get_category(cat_id) {
+        const cat = this.props.categories.find(x => x.id === cat_id);
+        return cat !== undefined ? cat.category : "Без категории"
+    }
 
     componentDidMount() {
         const initData = {};
         const req_id = Number(this.$f7route.params.reqId);
-
         if (req_id > 0) {
             const request = this.props.requests.find(request => request.id === req_id);
             // Set data to local state
-            initData.category_id = request.category_id;
-            initData.car_id = request.car_id;
-            initData.vin = request.vin;
-            initData.text = request.text;
-            initData.shop_id = request.shop_id;
-            initData.selected_shops = [request.shop_id];
+            initData.request_id = req_id;
+            initData.shop_id = this.props.user.shop_id;
+            initData.user_id = this.props.user.id;
+            initData.request = request;
             this.setState(initData);
         }
     }
 
     render() {
-        const {selected_shops, category_id, car_id, vin, text} = this.state;
-        const {shops, categories, cars, brands, models} = this.props;
-        const selectedShops = shops.filter(x => selected_shops.indexOf(x.id) !== -1);
-        const req_id = this.$f7route.params.reqId;
+        const {price, description, is_new, request} = this.state;
 
         return (
             <Page>
@@ -118,92 +97,64 @@ class NewRequestPage extends Component {
                     color="white"
                     textColor="white"
                     bgColor="main"
-                    title={req_id > 0 ? "Редактировать заявку" : "Новая заявка"}
+                    title={"Ответ на запрос"}
                     backLink="Back"
                 >
                 </Navbar>
-                <BlockTitle
-                    style={{whiteSpace: 'initial'}}
-                >Здесь вы можете оставить заявку на подбор необходимой вам запчасти или услуги.</BlockTitle>
-                <List>
-                    <ListInput
-                        label="Категория товара"
-                        type="select"
-                        placeholder="Выберите..."
-                        value={category_id}
-                        onChange={(event) => this.handleData('category_id', event.target.value)}
+                <List
+                    mediaList
+                    className={"no-margin list-title"}
+                >
+                    <ListItem
+                        swipeout
+                        after={request.created_at.toLocaleString()}
+                        text={request.text}
                     >
-                        <option key={0} value={null}>Выберите...</option>
-                        {
-                        categories.map((item) =>
-                            <option key={item.id} value={item.id}>{item.category}</option>
-                        )
-                    }
-                    </ListInput>
-                    <ListInput
-                        label="Автомобиль"
-                        type="select"
-                        placeholder="Выберите..."
-                        value={car_id}
-                        onChange={(event) => this.handleCarData( event.target.value)}
-                    >
-                        <option key={0} value={null}>Выберите...</option>
-                        {
-                            cars.map(car => (
-                                <option
-                                    key={'car_'+car.id}
-                                    value={car.id}
-                                >{brands.find(brand => brand.id === car.car_brand_id).car_brand
-                                + ' ' + models.find(model => model.id === car.car_model_id).car_model}</option>
-                            ))
-                        }
-                    </ListInput>
+                                <span slot="title">
+                                    <Icon className={"status-icon"} material="access_time" color="blue"/>
+                                    {this.get_category(request.category_id)}
+                                </span>
+                    </ListItem>
+                </List>
+                <List
+                    className={"list-with-header"}>
+                    <ListItem>
+                        <BlockTitle
+                            style={{whiteSpace: 'initial'}}
+                        >Здесь вы можете ответить на заявку покупателя.</BlockTitle>
+                    </ListItem>
+                    <ListItem>
+                        <span>Товар новый</span>
+                        <Toggle defaultChecked={is_new}
+                                onChange={() => this.handleData('is_new', !is_new)}
+                        />
+                    </ListItem>
                     <ListInput
                         outline
-                        label="VIN"
+                        label="Цена"
                         floatingLabel
                         type="text"
-                        placeholder="Для более быстрого поиска запчасти введите VIN номер автомобиля"
-                        value={vin}
-                        onChange={(event) => this.handleData('vin', event.target.value)}
+                        placeholder="Стоимость товара/услуги"
+                        value={price}
+                        onChange={(event) => this.handleData('price', event.target.value)}
                     />
                     <ListInput
                         outline
                         label="Описание"
                         floatingLabel
                         type="textarea"
-                        placeholder="Дополнительная информация о требуемом товаре..."
-                        value={text}
-                        onChange={(event) => this.handleData('text', event.target.value)}
+                        placeholder="Дополнительная информация о товаре/предложении..."
+                        value={description}
+                        onChange={(event) => this.handleData('description', event.target.value)}
                     />
 
-                    <BlockTitle>Запрос в магазин:
-                        <Button
-                            small
-                            fill
-                            onClick={() => this.set_stores()}
-                            style={{float: 'right', display: 'inline-block'}}
-                        >Выбрать</Button>
-                    </BlockTitle>
-                    {
-                        selectedShops.length > 0 ?
-                            (
-                                <Block strong>
-                                    {
-                                        selectedShops.map((item, index) => {
-                                            return <Chip key={index} text={item.name}/>
-                                        })
-                                    }
-                                </Block>
-                            )
-                            : null
-                    }
+
                 </List>
                 <Block>
                     <Button
                         fill
-                        onClick={() => this.sendRequest(req_id)}
-                    >{req_id > 0 ? 'Сохранить изменения' : 'Отправить заявку'}</Button>
+                        onClick={() => this.sendAnswer()}
+                    >Отправить ответ</Button>
                 </Block>
             </Page>
         );
@@ -222,12 +173,13 @@ const mapStateToProps = store => {
         categories: store.stores.categories,
     }
 };
-//handleAddRequests
+/*
 const mapDispatchToProps = dispatch => {
     return {
         handleAddRequests: data => dispatch(handleAddRequests(data)),
         handleUpdateRequest: data => dispatch(handleUpdateRequest(data)),
     }
 };
+*/
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewRequestPage)
+export default connect(mapStateToProps/*, mapDispatchToProps*/)(NewRequestPage)

@@ -8,11 +8,6 @@ import {
 
 class SettingsPage extends React.Component {
 
-    forward() {
-        const app = this.$f7;
-        app.dialog.alert('Favorite');
-    }
-
     render() {
         const {user} = this.props;
         return (
@@ -42,17 +37,6 @@ class SettingsPage extends React.Component {
                         </span>
                         </ListItem>
                     }
-
-
-                    <ListItem
-                        button
-                        link="/cars/"
-                        subtitle="Для быстрого поиска"
-                    >
-                        <span slot="title">
-                            <Icon className={"status-icon"} material="directions_car" color="main"/> Мои автомобили
-                        </span>
-                    </ListItem>
                 </List>
             </div>
         );

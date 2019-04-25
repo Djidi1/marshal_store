@@ -1,8 +1,8 @@
 {
-  "name": "marshal-service",
+  "name": "marshal-service-store",
   "version": "1.0.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "https://djidi1.github.io/marshal_store",
   "dependencies": {
     "axios": "^0.18.0",
     "framework7": "^4.2.0",

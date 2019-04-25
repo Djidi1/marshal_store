@@ -25,9 +25,7 @@ import {handleLogin} from "../../actions/UserActions";
 import {
     handleCategories,
     handleShops,
-    handleFavoriteShops,
     handleRequests,
-    handleCars,
     handleCarBrands,
     handleCarModels,
 } from "../../actions/DataActions";
@@ -42,19 +40,15 @@ class initApplication {
         if (detect.state.online) {
             let get_data = new getData();
             await get_data.data('shops').then(value => value !== undefined && props.handleShops(value));
-            await get_data.data('favorite-shops').then(value => value !== undefined && props.handleFavoriteShops(value.result));
             await get_data.data('categories').then(value => value !== undefined && props.handleCategories(value));
-            await get_data.data('userRequests').then(value => value !== undefined && props.handleRequests(value));
-            await get_data.data('cars').then(value => value !== undefined && props.handleCars(value));
+            await get_data.data('requests').then(value => value !== undefined && props.handleRequests(value));
             await get_data.data('carbrands').then(value => value !== undefined && props.handleCarBrands(value));
             await get_data.data('carmodels').then(value => value !== undefined && props.handleCarModels(value));
         } else {
             // from idb
             await get('shops').then(value => value !== undefined && props.handleShops(value));
-            await get('favorite-shops').then(value => value !== undefined && props.handleFavoriteShops(value.result));
             await get('categories').then(value => value !== undefined && props.handleCategories(value));
-            await get('userRequests').then(value => value !== undefined && props.handleRequests(value));
-            await get('cars').then(value => value !== undefined && props.handleCars(value));
+            await get('requests').then(value => value !== undefined && props.handleRequests(value));
             await get('carbrands').then(value => value !== undefined && props.handleCarBrands(value));
             await get('carmodels').then(value => value !== undefined && props.handleCarModels(value));
         }
@@ -77,12 +71,6 @@ class HomePage extends React.Component {
         this.$f7.dialog.close();
     }
 
-    new_request(reqId) {
-        const app = this.$f7;
-        app.views.main.router.navigate('/open_request/' + reqId + '/');
-        return false;
-    }
-
     chgTitle = (title) => {
         this.setState({title: title});
     };
@@ -95,7 +83,7 @@ class HomePage extends React.Component {
                     color="white"
                     textColor="white"
                     bgColor="main"
-                    title={"Маршал Сервис" + (title !== '' ? (' / ' + title) : "")}
+                    title={"МС" + (title !== '' ? (' / ' + title) : "")}
                 >
                     <NavRight>
                         <Offline>
@@ -110,22 +98,9 @@ class HomePage extends React.Component {
                     color="main"
                 >
                     <Link tabLink="#requests" onClick={() => this.chgTitle('Заявки')} tabLinkActive text="Заявки" iconMd="material:important_devices"/>
-                    <Link tabLink="#stores" onClick={() => this.chgTitle('Магазины')} text="Магазины" iconMd="material:store"/>
-                    <Link tabLink="#new" onClick={() => this.new_request(0)} text=" " >
-                        <Icon material="add"/>
-                    </Link>
-                    <Link tabLink="#favorites" onClick={() => this.chgTitle('Избранное')} text="Избранное" iconMd="material:favorite"/>
+                    <Link tabLink="#stores" onClick={() => this.chgTitle('Заказы')} text="Заказы" iconMd="material:list"/>
                     <Link tabLink="#person" onClick={() => this.chgTitle('Личный Кабинет')} text="Кабинет" iconMd="material:person"/>
                 </Toolbar>
-                <Fab
-                    href="open_request/0/"
-                    position="center-bottom"
-                    slot="fixed"
-                    color="blue"
-                    className={"btn-new-request"}
-                >
-                    <Icon ios="f7:add" md="material:add"/>
-                </Fab>
 
                 <Tabs animated>
                     <Tab id="requests" className="page-content" tabActive>
@@ -156,10 +131,8 @@ const mapDispatchToProps = dispatch => {
     return {
         handleLogin: user => dispatch(handleLogin(user)),
         handleShops: shops => dispatch(handleShops(shops)),
-        handleFavoriteShops: shops => dispatch(handleFavoriteShops(shops)),
         handleCategories: categories => dispatch(handleCategories(categories)),
         handleRequests: requests => dispatch(handleRequests(requests)),
-        handleCars: cars => dispatch(handleCars(cars)),
         handleCarBrands: brands => dispatch(handleCarBrands(brands)),
         handleCarModels: models => dispatch(handleCarModels(models)),
     }

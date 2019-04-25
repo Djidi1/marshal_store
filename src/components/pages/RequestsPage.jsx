@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {getData} from "../../axios/getData";
-import {setData} from "../../axios/setData";
+// import {setData} from "../../axios/setData";
 import {handleRequest,handleDeleteRequest} from "../../actions/DataActions";
 
 import {Detector} from "react-detect-offline";
@@ -32,23 +32,9 @@ class RequestsPage extends React.Component {
         this.state = {};
     }
 
-    deleteRequest = (req_id) => {
-        const set_data = new setData();
-        if (req_id > 0) {
-            set_data.dataDelete('request-detele/'+req_id).then(() => {
-                this.props.handleDeleteRequest(req_id);
-            });
-        }
-    };
-
-    deleteHandle(req_id) {
+    answer_to_request(reqId) {
         const app = this.$f7;
-        app.dialog.confirm('Эта операция необратима', 'Удалить заявку?', () => this.deleteRequest(req_id), () => {});
-    }
-
-    edit_request(reqId) {
-        const app = this.$f7;
-        app.views.main.router.navigate('open_request/' + reqId + '/');
+        app.views.main.router.navigate('answer_to_request/' + reqId + '/');
     }
 
     open_request(reqId) {
@@ -78,7 +64,7 @@ class RequestsPage extends React.Component {
                     {
                         requests.length === 0
                             ?
-                            <Block>Вы пока не создавали запросов... Настало время?</Block>
+                            <Block>Запросы пока не создавались...</Block>
                             :
                             requests.map(item => {
                                 return <ListItem
@@ -86,7 +72,6 @@ class RequestsPage extends React.Component {
                                     swipeout
                                     onClick={() => this.open_request(item.id)}
                                     after={item.created_at.toLocaleString()}
-                                    subtitle={"Предложений: " + (item.answers_count) + ""}
                                     text={item.text}
                                 >
                                 <span slot="title">
@@ -98,13 +83,8 @@ class RequestsPage extends React.Component {
                                     {this.get_category(item.category_id)}
                                 </span>
                                     <SwipeoutActions left>
-                                        <SwipeoutButton color="blue" onClick={() => this.edit_request(item.id)}>
-                                            <Icon material="edit"/> Редактировать
-                                        </SwipeoutButton>
-                                    </SwipeoutActions>
-                                    <SwipeoutActions right>
-                                        <SwipeoutButton color="#cb2128" onClick={() => this.deleteHandle(item.id)}>
-                                            <Icon material="delete"/> Удалить
+                                        <SwipeoutButton color="blue" onClick={() => this.answer_to_request(item.id)}>
+                                            <Icon material="reply"/> Ответить
                                         </SwipeoutButton>
                                     </SwipeoutActions>
                                 </ListItem>
@@ -127,7 +107,6 @@ const mapStateToProps = store => {
 const mapDispatchToProps = dispatch => {
     return {
         handleRequest: request => dispatch(handleRequest(request)),
-        handleDeleteRequest: data => dispatch(handleDeleteRequest(data)),
     }
 };
 

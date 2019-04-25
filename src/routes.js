@@ -52,7 +52,7 @@ export default [
         component: DynamicRoutePage,
     },
     {
-        path: '/open_request/:reqId/',
+        path: '/answer_to_request/:reqId/',
         component: NewRequestPage,
     },
     {
