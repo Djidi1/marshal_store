@@ -10,6 +10,7 @@ import StoresList from "./components/pages/StoresList";
 import LoginPage from "./components/pages/LoginPage";
 import EditUserPage from "./components/pages/EditUserPage";
 import RegisterUserPage from "./components/pages/RegisterUserPage";
+import EditStorePage from "./components/pages/EditStorePage";
 
 export default [
     {
@@ -55,6 +56,10 @@ export default [
     {
         path: '/register_user/',
         component: RegisterUserPage,
+    },
+    {
+        path: '/edit_store/:storeId/',
+        component: EditStorePage,
     },
     {
         path: '(.*)',
