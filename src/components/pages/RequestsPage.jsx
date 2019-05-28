@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from "react-redux";
 import {getData} from "../../axios/getData";
 // import {setData} from "../../axios/setData";
-import {handleRequest,handleDeleteRequest} from "../../actions/DataActions";
+import {handleRequest} from "../../actions/DataActions";
 
 import {Detector} from "react-detect-offline";
 import {get} from "idb-keyval";
@@ -56,7 +56,7 @@ class RequestsPage extends React.Component {
             <React.Fragment>
                 <BlockTitle
                     style={{whiteSpace: 'initial'}}
-                >Здесь вы можете подать заявку на подбор необходимого вам автотовара или запчасти.</BlockTitle>
+                >Здесь отображаются заявки от покупателей на подбор автотоваров или запчастей.</BlockTitle>
                 <List
                     mediaList
                     className={"no-margin"}
@@ -64,7 +64,7 @@ class RequestsPage extends React.Component {
                     {
                         requests.length === 0
                             ?
-                            <Block>Запросы пока не создавались...</Block>
+                            <Block>Нет открытых заявок...</Block>
                             :
                             requests.map(item => {
                                 return <ListItem
@@ -73,14 +73,15 @@ class RequestsPage extends React.Component {
                                     onClick={() => this.open_request(item.id)}
                                     after={item.created_at.toLocaleString()}
                                     text={item.text}
+                                    subtitle={`Ответов: ${item.answers_count}`}
                                 >
                                 <span slot="title">
-                                    <Icon
+                                    {/*<Icon
                                         className={"status-icon"}
                                         material={item.answers > 0 ? 'check_circle_outline' : 'access_time'}
                                         color="blue"
-                                    />
-                                    {this.get_category(item.category_id)}
+                                    />*/}
+                                    [{item.status.status}] {this.get_category(item.category_id)}
                                 </span>
                                     <SwipeoutActions left>
                                         <SwipeoutButton color="blue" onClick={() => this.answer_to_request(item.id)}>

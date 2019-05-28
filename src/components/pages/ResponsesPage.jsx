@@ -13,6 +13,8 @@ import {
     Icon,
     ListItem,
     Block,
+    Toolbar,
+    Button
 } from 'framework7-react';
 
 const getResponse = async (props, resp_id) => {
@@ -45,6 +47,12 @@ class ResponsesPage extends Component {
         });
     }
 
+    newResponse() {
+        const reqId = this.props.request.id;
+        const app = this.$f7;
+        app.views.main.router.navigate(`/response_to_request/${reqId}/`);
+    }
+
     render() {
         const {request} = this.props;
         return (
@@ -57,6 +65,15 @@ class ResponsesPage extends Component {
                     backLink="Back"
                 >
                 </Navbar>
+                <Toolbar
+                    position={'bottom'}
+                >
+                    <Button
+                        fill
+                        onClick={()=>this.newResponse()}
+                        className={"btn-new-response"}
+                    >Ответить на заявку</Button>
+                </Toolbar>
                 <List
                     mediaList
                     className={"no-margin list-title"}
@@ -64,13 +81,13 @@ class ResponsesPage extends Component {
                     <ListItem
                         swipeout
                         after={request.created_at.toLocaleString()}
-                        subtitle={"Предложений: " + (request.answers.length || 0) + ""}
+                        subtitle={`Ответов: ${request.answers.length || 0}`}
                         text={request.text}
                     >
-                                <span slot="title">
-                                    <Icon className={"status-icon"} material="access_time" color="blue"/>
-                                    {this.get_category(request.category_id)}
-                                </span>
+                        <span slot="title">
+                            {/*<Icon className={"status-icon"} material="access_time" color="blue"/>*/}
+                            [{request.status.status}] {this.get_category(request.category_id)}
+                        </span>
                     </ListItem>
                 </List>
 
@@ -95,7 +112,7 @@ user_id: 1
                     {
                         request.answers.length === 0
                             ?
-                            <Block>На ваш запрос пока нет ответов...</Block>
+                            <Block>На запрос пока нет ответов...</Block>
                             :
                             request.answers.map(item => {
                                 return <ListItem

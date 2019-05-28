@@ -9,7 +9,6 @@ import {
     Button,
     ListItem,
     Toggle,
-    Icon,
 } from 'framework7-react';
 import connect from "react-redux/es/connect/connect";
 
@@ -30,18 +29,18 @@ import {setData} from "../../axios/setData";
         'is_new',
         'description'
  */
-class NewRequestPage extends Component {
+class NewResponsePage extends Component {
     constructor() {
         super();
         this.state = {
-            request_id: null,
+            request_id: 0,
             status_id: 1,
             shop_id: 0,
             user_id: 0,
             price: '',
             is_new: true,
             description: '',
-            request: {created_at: new Date()},
+            request: {created_at: new Date(), answers_count: 0, status: ''},
         }
     }
 
@@ -108,12 +107,13 @@ class NewRequestPage extends Component {
                     <ListItem
                         swipeout
                         after={request.created_at.toLocaleString()}
+                        subtitle={`Ответов: ${request.answers_count || 0}`}
                         text={request.text}
                     >
-                                <span slot="title">
-                                    <Icon className={"status-icon"} material="access_time" color="blue"/>
-                                    {this.get_category(request.category_id)}
-                                </span>
+                        <span slot="title">
+                            {/*<Icon className={"status-icon"} material="access_time" color="blue"/>*/}
+                            [{request.status.status}] {this.get_category(request.category_id)}
+                        </span>
                     </ListItem>
                 </List>
                 <List
@@ -182,4 +182,4 @@ const mapDispatchToProps = dispatch => {
 };
 */
 
-export default connect(mapStateToProps/*, mapDispatchToProps*/)(NewRequestPage)
+export default connect(mapStateToProps/*, mapDispatchToProps*/)(NewResponsePage)

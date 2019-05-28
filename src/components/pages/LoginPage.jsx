@@ -89,8 +89,8 @@ class LoginPage extends React.Component {
 
                 <List>
                     <BlockFooter>
-                        <p><Link>Зарегистрироваться</Link></p>
-                        <p>Для восстановления пароля нажмите <Link>ссылку</Link></p>
+                        <p><Link href={'/register_user/'}>Зарегистрироваться</Link></p>
+                        {/*<p>Для восстановления пароля нажмите <Link>ссылку</Link></p>*/}
                     </BlockFooter>
                 </List>
             </Page>

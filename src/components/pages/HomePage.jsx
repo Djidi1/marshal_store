@@ -1,7 +1,7 @@
 import React from 'react';
-import { get } from 'idb-keyval';
 import {connect} from "react-redux";
-import { Offline, Detector } from "react-detect-offline";
+import { Offline } from "react-detect-offline";
+import { initApplication } from "../initApp"
 
 import {
     Page,
@@ -11,17 +11,9 @@ import {
     Toolbar,
     Tabs,
     Tab,
-    Icon,
-    Fab
 } from 'framework7-react';
 
-import RequestsPage from './RequestsPage';
-import StoresPage from './StoresPage';
-import SettingsPage from './SettingsPage';
-import FavoritesPage from "./FavoritesPage";
-
-import {getData} from '../../axios/getData'
-import {handleLogin} from "../../actions/UserActions";
+import { handleLogin } from "../../actions/UserActions";
 import {
     handleCategories,
     handleShops,
@@ -30,45 +22,27 @@ import {
     handleCarModels,
 } from "../../actions/DataActions";
 
-// Load data from indexedDB to Store
-class initApplication {
-    init = async (props) => {
-        await get('user').then(value => value !== undefined && props.handleLogin(value));
-
-        // from internet
-        let detect = new Detector();
-        if (detect.state.online) {
-            let get_data = new getData();
-            await get_data.data('shops').then(value => value !== undefined && props.handleShops(value));
-            await get_data.data('categories').then(value => value !== undefined && props.handleCategories(value));
-            await get_data.data('requests').then(value => value !== undefined && props.handleRequests(value));
-            await get_data.data('carbrands').then(value => value !== undefined && props.handleCarBrands(value));
-            await get_data.data('carmodels').then(value => value !== undefined && props.handleCarModels(value));
-        } else {
-            // from idb
-            await get('shops').then(value => value !== undefined && props.handleShops(value));
-            await get('categories').then(value => value !== undefined && props.handleCategories(value));
-            await get('requests').then(value => value !== undefined && props.handleRequests(value));
-            await get('carbrands').then(value => value !== undefined && props.handleCarBrands(value));
-            await get('carmodels').then(value => value !== undefined && props.handleCarModels(value));
-        }
-    }
-}
-
+import RequestsPage from './RequestsPage';
+import OrdersPage from './OrdersPage';
+import SettingsPage from './SettingsPage';
 
 class HomePage extends React.Component {
     constructor() {
         super();
         this.state = {
             title: "Заявки",
+            loaded: false,
         }
     }
 
     async componentDidMount() {
-        this.$f7.dialog.preloader('Загрузка...');
-        const initApp = new initApplication();
-        await initApp.init(this.props);
-        this.$f7.dialog.close();
+        if (!this.state.loaded) {
+            this.$f7.dialog.preloader('Загрузка...');
+            const initApp = new initApplication();
+            await initApp.init(this.props);
+            this.setState({loaded: true});
+            this.$f7.dialog.close();
+        }
     }
 
     chgTitle = (title) => {
@@ -98,7 +72,7 @@ class HomePage extends React.Component {
                     color="main"
                 >
                     <Link tabLink="#requests" onClick={() => this.chgTitle('Заявки')} tabLinkActive text="Заявки" iconMd="material:important_devices"/>
-                    <Link tabLink="#stores" onClick={() => this.chgTitle('Заказы')} text="Заказы" iconMd="material:list"/>
+                    <Link tabLink="#orders" onClick={() => this.chgTitle('Заказы')} text="Заказы" iconMd="material:list"/>
                     <Link tabLink="#person" onClick={() => this.chgTitle('Личный Кабинет')} text="Кабинет" iconMd="material:person"/>
                 </Toolbar>
 
@@ -106,11 +80,8 @@ class HomePage extends React.Component {
                     <Tab id="requests" className="page-content" tabActive>
                         <RequestsPage/>
                     </Tab>
-                    <Tab id="stores" className="page-content">
-                        <StoresPage/>
-                    </Tab>
-                    <Tab id="favorites" className="page-content">
-                        <FavoritesPage/>
+                    <Tab id="orders" className="page-content">
+                        <OrdersPage/>
                     </Tab>
                     <Tab id="person" className="page-content">
                         <SettingsPage/>
