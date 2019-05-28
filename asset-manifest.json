@@ -1,17 +1,20 @@
 {
-  "main.css": "/marshal_store/static/css/main.d19f9286.chunk.css",
-  "main.js": "/marshal_store/static/js/main.987520ed.chunk.js",
-  "main.js.map": "/marshal_store/static/js/main.987520ed.chunk.js.map",
-  "runtime~main.js": "/marshal_store/static/js/runtime~main.5cfa5aec.js",
-  "runtime~main.js.map": "/marshal_store/static/js/runtime~main.5cfa5aec.js.map",
-  "static/css/2.bb3f35ac.chunk.css": "/marshal_store/static/css/2.bb3f35ac.chunk.css",
-  "static/js/2.0aa1f144.chunk.js": "/marshal_store/static/js/2.0aa1f144.chunk.js",
-  "static/js/2.0aa1f144.chunk.js.map": "/marshal_store/static/js/2.0aa1f144.chunk.js.map",
-  "index.html": "/marshal_store/index.html",
-  "precache-manifest.2182d6c5527eb954a188c60e2a3e22c0.js": "/marshal_store/precache-manifest.2182d6c5527eb954a188c60e2a3e22c0.js",
-  "service-worker.js": "/marshal_store/service-worker.js",
-  "static/css/2.bb3f35ac.chunk.css.map": "/marshal_store/static/css/2.bb3f35ac.chunk.css.map",
-  "static/css/main.d19f9286.chunk.css.map": "/marshal_store/static/css/main.d19f9286.chunk.css.map",
-  "static/media/icons.css": "/marshal_store/static/media/MaterialIcons-Regular.e79bfd88.eot",
-  "static/media/app.css": "/marshal_store/static/media/icon.efdffb4a.svg"
+  "files": {
+    "main.css": "/marshal_store/static/css/main.bc161165.chunk.css",
+    "main.js": "/marshal_store/static/js/main.dec4119e.chunk.js",
+    "main.js.map": "/marshal_store/static/js/main.dec4119e.chunk.js.map",
+    "runtime~main.js": "/marshal_store/static/js/runtime~main.d7c5abe5.js",
+    "runtime~main.js.map": "/marshal_store/static/js/runtime~main.d7c5abe5.js.map",
+    "static/css/2.4c406b75.chunk.css": "/marshal_store/static/css/2.4c406b75.chunk.css",
+    "static/js/2.a12a609d.chunk.js": "/marshal_store/static/js/2.a12a609d.chunk.js",
+    "static/js/2.a12a609d.chunk.js.map": "/marshal_store/static/js/2.a12a609d.chunk.js.map",
+    "index.html": "/marshal_store/index.html",
+    "precache-manifest.9eae74ae20b7dd986df79d5097a49c92.js": "/marshal_store/precache-manifest.9eae74ae20b7dd986df79d5097a49c92.js",
+    "service-worker.js": "/marshal_store/service-worker.js",
+    "static/css/2.4c406b75.chunk.css.map": "/marshal_store/static/css/2.4c406b75.chunk.css.map",
+    "static/css/main.bc161165.chunk.css.map": "/marshal_store/static/css/main.bc161165.chunk.css.map",
+    "static/media/icons.css": "/marshal_store/static/media/MaterialIcons-Regular.e79bfd88.eot",
+    "static/media/UploadIcon.svg": "/marshal_store/static/media/UploadIcon.1cedb6e9.svg",
+    "static/media/app.css": "/marshal_store/static/media/icon.efdffb4a.svg"
+  }
 }
