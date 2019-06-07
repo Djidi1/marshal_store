@@ -28,7 +28,6 @@ class SettingsPage extends React.Component {
         const {user} = this.props;
         return (
             <>
-                <h1>Личный кабинет</h1>
                     {(user.id > 0)
                         ?
                         <List

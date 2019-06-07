@@ -4,6 +4,7 @@ import {
     Navbar,
     List,
     ListInput,
+    ListItem,
     Block,
     BlockTitle,
     Button,
@@ -75,7 +76,7 @@ class EditStorePage extends Component {
 
     render() {
         const { name, description, address, phone, comment, store_id} = this.state;
-
+        const { carbrands, carmodels, categories } = this.props;
         return (
             <Page>
                 <Navbar
@@ -92,6 +93,41 @@ class EditStorePage extends Component {
                     ? "После регистрации станут доступны дополнительные возможности."
                     : "Здесь вы можете отредактировать параметры своего профиля."}</BlockTitle>
                 <List>
+                    <ListItem
+                        title="Категория"
+                        smartSelect
+                    >
+                        <select name="fruits" multiple defaultValue="0">
+                            <option value="0">Все</option>
+                            {
+                                categories.map( cat => {
+                                    return <option value={cat.id}>{cat.category}</option>
+                                })
+                            }
+                        </select>
+                    </ListItem>
+
+                    <ListItem
+                        title="Автомобили"
+                        smartSelect
+                        virtualList
+                        smartSelectParams={{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Поиск марки'}}
+                    >
+                        <select name="car" multiple defaultValue="0">
+                            <option value="0">Все</option>
+                            {
+                                carbrands.map( brand => {
+                                    return <optgroup label={brand.car_brand}>
+                                            {
+                                            carmodels
+                                                .filter( x => x.car_brand_id === brand.id)
+                                                .map( model => <option value={model.id}>{model.car_model}</option>)
+                                            }
+                                    </optgroup>
+                                })
+                            }
+                        </select>
+                    </ListItem>
                     <ListInput
                         label="Название магазина"
                         floatingLabel
@@ -148,6 +184,9 @@ class EditStorePage extends Component {
 const mapStateToProps = store => {
     return {
         user: store.user,
+        carbrands: store.carbrands,
+        carmodels: store.carmodels,
+        categories: store.stores.categories
     }
 };
 
