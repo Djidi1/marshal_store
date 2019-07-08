@@ -1,132 +1,135 @@
 /* Your app styles here */
 * {
-    /*--f7-subnavbar-height: auto;*/
-    --f7-navbar-bg-color: #cb2128;
-    --f7-color-red: #cb2128;
-    --f7-color-red-rgb: 203, 33, 40;
-    --f7-color-red-shade: #c32128;
-    --f7-color-red-tint: #d32128;
-    --f7-theme-color-bg-color: #cb2128;
-    --f7-theme-color: #cb2128;
-    --f7-bars-link-color: #ffffff;
-    --f7-navbar-text-color: #ffffff;
-    --f7-message-footer-font-size: 10px;
-    --f7-toolbar-link-color: #cb2128;
-
+  /*--f7-subnavbar-height: auto;*/
+  --f7-navbar-bg-color: #cb2128;
+  --f7-color-red: #cb2128;
+  --f7-color-red-rgb: 203, 33, 40;
+  --f7-color-red-shade: #c32128;
+  --f7-color-red-tint: #d32128;
+  --f7-theme-color-bg-color: #cb2128;
+  --f7-theme-color: #cb2128;
+  --f7-bars-link-color: #ffffff;
+  --f7-navbar-text-color: #ffffff;
+  --f7-message-footer-font-size: 10px;
+  --f7-toolbar-link-color: #cb2128;
 }
 
 /*cb2128 */
 i.icon.marshal-icon {
-    background: url('../images/icon.svg');
+  background: url("../images/icon.svg");
 }
 
 .search-bar.subnavbar {
-    height: auto !important;
+  height: auto !important;
 }
 .stores-list .page-content {
-    padding-top: calc(var(--f7-navbar-height) + 52px) !important;
+  padding-top: calc(var(--f7-navbar-height) + 52px) !important;
 }
 
 i.icon.status-icon {
-    vertical-align: bottom;
+  vertical-align: bottom;
 }
 
 /*.messages-block {*/
 /*height: calc(100vh - calc(var(--f7-subnavbar-height)));*/
 /*margin-top: calc(var(--f7-subnavbar-height));*/
 /*}*/
-.messages-title, .message {
-    margin-bottom: var(--f7-message-margin);
+.messages-title,
+.message {
+  margin-bottom: var(--f7-message-margin);
 }
 .messages {
-    min-height: auto !important;
+  min-height: auto !important;
 }
 
-.list-request, .list-request ul{
-    height: 100%;
-    width: 100%;
+.list-request,
+.list-request ul {
+  height: 100%;
+  width: 100%;
 }
 .list-with-header {
-    padding-top: 54px;
+  padding-top: 54px;
 }
 .list-title.list {
-    position: fixed;
-    top: var(--f7-navbar-height);
-    display: block;
-    z-index: 100;
-    width: 100vw;
+  position: fixed;
+  top: var(--f7-navbar-height);
+  display: block;
+  z-index: 100;
+  width: 100vw;
 }
 .list-title:before {
-    content: '';
-    position: absolute;
-    right: 0;
-    width: 100%;
-    top: 100%;
-    bottom: auto;
-    height: 8px;
-    pointer-events: none;
-    background: var(--f7-navbar-shadow-image);
+  content: "";
+  position: absolute;
+  right: 0;
+  width: 100%;
+  top: 100%;
+  bottom: auto;
+  height: 8px;
+  pointer-events: none;
+  background: var(--f7-navbar-shadow-image);
 }
 
 h1 {
-    padding: 0 14px;
+  padding: 0 14px;
 }
 
-
-.btn-new-request{
-    bottom: 8px !important;
+.btn-new-request {
+  bottom: 8px !important;
 }
-.toolbar-inner .btn-new-response{
-    flex: 1;
-    margin: 0 10px;
+.toolbar-inner .btn-new-response {
+  flex: 1;
+  margin: 0 10px;
 }
 
 span.cat-icon svg {
-    flex: 1 1;
-    width: 40px;
-    margin-right: 8px;
+  flex: 1 1;
+  width: 40px;
+  margin-right: 8px;
 }
 span.cat-icon svg .fil0 {
-    fill: var(--f7-color-red);
+  fill: var(--f7-color-red);
 }
 span.cat-icon {
-    flex: 1;
+  flex: 1;
 }
 span.categories-list {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 .messagebar-sheet {
-    padding-bottom: 60px;
+  padding-bottom: 60px;
 }
 .fileContainer p {
-    display: none;
+  display: none;
 }
 .errorsContainer {
-    position: absolute;
-    background: white;
-    border-radius: 5px;
-    padding: 0 4px;
-    opacity: 0.95;
-    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.05);
+  position: absolute;
+  background: white;
+  border-radius: 5px;
+  padding: 0 4px;
+  opacity: 0.95;
+  box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.05);
 }
 .fileContainer {
-    box-shadow: none;
-    padding: 0;
-    margin: 0;
-    border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
 }
 
 .fileUploader {
-    position: absolute;
-    bottom: 0;
+  position: absolute;
+  bottom: 0;
 }
 .fileContainer button.chooseFileButton {
-    height: 50px;
-    margin: 0;
-    border-radius: 0;
-    background-color: var(--f7-color-red);
+  height: 50px;
+  margin: 0;
+  border-radius: 0;
+  background-color: var(--f7-color-red);
 }
 .fileContainer button.chooseFileButton:hover {
-    background-color: var(--f7-color-red-tint);
+  background-color: var(--f7-color-red-tint);
+}
+.DayPickerInput-Overlay {
+  z-index: 99;
 }
