@@ -1,8 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { getData } from "../../axios/getData";
-// import {setData} from "../../axios/setData";
-import { handleRequest } from "../../actions/DataActions";
+import { handleRequest, handleRequests } from "../../actions/DataActions";
 
 import moment from "moment";
 
@@ -33,11 +32,21 @@ const getRequest = async (props, reqId) => {
   }
 };
 
+const getRequests = async (props, dateFrom, dateTo) => {
+  dateFrom = moment(dateFrom).format("YYYY-MM-DD");
+  dateTo = moment(dateTo).format("YYYY-MM-DD");
+  let get_data = new getData();
+  await get_data
+    .data("requests", { params: { dateFrom, dateTo } })
+    .then(value => value !== undefined && props.handleRequests(value));
+};
+
 class RequestsPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      dateFrom: moment()
+      dateFrom: "",
+      dateTo: ""
     };
   }
 
@@ -60,8 +69,13 @@ class RequestsPage extends React.Component {
   }
 
   handleDateChange = date => {
+    this.$f7.dialog.preloader("Получаем заявки...");
     this.setState({
-      dateFrom: date
+      dateFrom: date[0],
+      dateTo: date[1] || date[0]
+    });
+    getRequests(this.props, this.state.dateFrom, this.state.dateTo).then(() => {
+      this.$f7.dialog.close();
     });
   };
 
@@ -80,6 +94,7 @@ class RequestsPage extends React.Component {
             placeholder="Выберите диапазон"
             id="date-range"
             readonly
+            onCalendarChange={this.handleDateChange}
             calendarParams={{ dateFormat: "dd.mm.yyyy", rangePicker: true }}
           />
         </List>
@@ -133,7 +148,8 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleRequest: request => dispatch(handleRequest(request))
+    handleRequest: request => dispatch(handleRequest(request)),
+    handleRequests: requests => dispatch(handleRequests(requests))
   };
 };
 
