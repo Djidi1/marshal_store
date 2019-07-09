@@ -41,19 +41,6 @@ class RequestsPage extends React.Component {
     };
   }
 
-  componentDidMount() {
-    const self = this;
-    const app = self.$f7;
-    const $ = self.$$;
-
-    self.calendarInline = app.calendar.create({
-      containerEl: "#date-range",
-      dateFormat: "M dd yyyy",
-      rangePicker: true,
-      openIn: "sheet"
-    });
-  }
-
   answer_to_request(reqId) {
     const app = this.$f7;
     app.views.main.router.navigate("answer_to_request/" + reqId + "/");
@@ -87,13 +74,13 @@ class RequestsPage extends React.Component {
           запчастей.
         </BlockTitle>
 
-        <BlockTitle>Range Picker</BlockTitle>
         <List noHairlinesMd>
           <ListInput
             type="datepicker"
-            placeholder="Select date range"
-            readonly
+            placeholder="Выберите диапазон"
             id="date-range"
+            readonly
+            calendarParams={{ dateFormat: "dd.mm.yyyy", rangePicker: true }}
           />
         </List>
 
