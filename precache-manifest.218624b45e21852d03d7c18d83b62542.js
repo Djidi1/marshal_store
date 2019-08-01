@@ -1,43 +1,43 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d8d53e7b951db2f1e1ae883e8b6ce72c",
+    "revision": "2acf33c34ce3913d30d5afbdb044edfd",
     "url": "/marshal_store/index.html"
   },
   {
-    "revision": "2a9fb96ce7b5b54b77fa",
-    "url": "/marshal_store/static/css/2.4c406b75.chunk.css"
+    "revision": "f809ba0cd18d3ad6fddb",
+    "url": "/marshal_store/static/css/2.5b681374.chunk.css"
   },
   {
-    "revision": "2704df5c176f4d0547e6",
-    "url": "/marshal_store/static/css/main.bc161165.chunk.css"
+    "revision": "2f25b0a988a00c0c4363",
+    "url": "/marshal_store/static/css/main.31957bba.chunk.css"
   },
   {
-    "revision": "2a9fb96ce7b5b54b77fa",
-    "url": "/marshal_store/static/js/2.a12a609d.chunk.js"
+    "revision": "f809ba0cd18d3ad6fddb",
+    "url": "/marshal_store/static/js/2.a34061f1.chunk.js"
   },
   {
-    "revision": "2704df5c176f4d0547e6",
-    "url": "/marshal_store/static/js/main.dec4119e.chunk.js"
+    "revision": "2f25b0a988a00c0c4363",
+    "url": "/marshal_store/static/js/main.b463b8dc.chunk.js"
   },
   {
     "revision": "37d05d078c1c602059df",
     "url": "/marshal_store/static/js/runtime~main.d7c5abe5.js"
   },
   {
-    "revision": "0a51e7bba83f6ce6ef65b35a9ba4e0f2",
-    "url": "/marshal_store/static/media/Framework7Icons-Regular.0a51e7bb.woff2"
+    "revision": "0efb066cbbeaa761f76a062f425e5af9",
+    "url": "/marshal_store/static/media/Framework7Icons-Regular.0efb066c.woff"
   },
   {
-    "revision": "0cefb5cc6ff6df9509ed193cff79de7c",
-    "url": "/marshal_store/static/media/Framework7Icons-Regular.0cefb5cc.woff"
+    "revision": "48c1c71096585974d7ed087615202945",
+    "url": "/marshal_store/static/media/Framework7Icons-Regular.48c1c710.ttf"
   },
   {
-    "revision": "61bbf26d99172b62fb8eb5b03585db72",
-    "url": "/marshal_store/static/media/Framework7Icons-Regular.61bbf26d.ttf"
+    "revision": "589f22db3ab56eb2cfc548d104f6d6f7",
+    "url": "/marshal_store/static/media/Framework7Icons-Regular.589f22db.eot"
   },
   {
-    "revision": "d5e7e689e790dd5f60eaa438da65581f",
-    "url": "/marshal_store/static/media/Framework7Icons-Regular.d5e7e689.eot"
+    "revision": "988e8c7a7c9a409cf58e6d72c9d73996",
+    "url": "/marshal_store/static/media/Framework7Icons-Regular.988e8c7a.woff2"
   },
   {
     "revision": "012cf6a10129e2275d79d6adac7f3b02",
