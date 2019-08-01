@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "2acf33c34ce3913d30d5afbdb044edfd",
+    "revision": "a6b0933b92f01c3e874c3cf7953b9e05",
     "url": "/marshal_store/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/marshal_store/static/css/2.5b681374.chunk.css"
   },
   {
-    "revision": "2f25b0a988a00c0c4363",
+    "revision": "e2c858a3d9453cdb9881",
     "url": "/marshal_store/static/css/main.31957bba.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/marshal_store/static/js/2.a34061f1.chunk.js"
   },
   {
-    "revision": "2f25b0a988a00c0c4363",
-    "url": "/marshal_store/static/js/main.b463b8dc.chunk.js"
+    "revision": "e2c858a3d9453cdb9881",
+    "url": "/marshal_store/static/js/main.4eb56176.chunk.js"
   },
   {
     "revision": "37d05d078c1c602059df",
