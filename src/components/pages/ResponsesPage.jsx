@@ -16,6 +16,7 @@ import {
   Toolbar,
   Button
 } from "framework7-react";
+import {convertIcon} from "../helpers/helpers";
 
 const getResponse = async (props, resp_id) => {
   let detect = new Detector();
@@ -32,10 +33,6 @@ const getResponse = async (props, resp_id) => {
 };
 
 class ResponsesPage extends Component {
-  get_category(cat_id) {
-    const cat = this.props.categories.find(x => x.id === cat_id);
-    return cat !== undefined ? cat.category : "Без категории";
-  }
 
   get_shop(shop_id) {
     const shop = this.props.shops.find(x => x.id === shop_id);
@@ -83,29 +80,22 @@ class ResponsesPage extends Component {
             swipeout
             after={request.created_at.toLocaleString()}
             subtitle={`Ответов: ${request.answers.length || 0}`}
-            text={request.text}
+            text={request.text || '-'}
           >
             <span slot="title">
-              {/*<Icon className={"status-icon"} material="access_time" color="blue"/>*/}
-              [{request.status.status}] {this.get_category(request.category_id)}
+              {
+                  request.category !== null &&
+                  <Icon
+                      icon='sub-title'
+                      style={{background: convertIcon(request.category.icon)}}
+                  />
+              }
+              [{request.status.status}]
             </span>
           </ListItem>
         </List>
 
         <List mediaList noHairlinesMd className={"list-with-header"}>
-          {/*
-created_at: "2019-04-09 00:00:00"
-description: "We have something "
-id: 1
-is_new: true
-price: 200
-request_id: 1
-shop_id: 7
-status_id: 1
-updated_at: "2019-04-09 00:00:00"
-updated_by: 1
-user_id: 1
-*/}
           {request.answers.length === 0 ? (
             <Block>На запрос пока нет ответов...</Block>
           ) : (
@@ -126,7 +116,7 @@ user_id: 1
                         color="green"
                       />
                     ) : null}
-                    {item.price} Р.
+                    {item.price} ₽
                   </b>
                 </ListItem>
               );

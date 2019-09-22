@@ -133,3 +133,58 @@ span.categories-list {
 .DayPickerInput-Overlay {
   z-index: 99;
 }
+
+#requests .page {
+  padding-top: 160px;
+  padding-bottom: 60px;
+}
+
+#requests .page-content {
+  padding-top: 0;
+  padding-bottom: 60px;
+  height: calc(100vh - 160px);
+}
+
+#requests .toolbar-top {
+  position: relative;
+  top: 0;
+}
+#requests .toolbar-top i.icon.category-icon {
+  width: 28px;
+  height: 28px;
+  margin-top: 6px;
+}
+#requests .toolbar-top span.tabbar-label {
+  padding-bottom: 6px;
+  font-size: 10px;
+}
+i.icon.sub-title {
+  width: 20px;
+  height: 20px;
+  margin-right: 1px;
+}
+
+i.icon.fav-icon {
+  top: -12px;
+  right: -12px;
+  position: absolute;
+  font-size: 16px;
+}
+.car-brand {
+  font-weight: bold;
+}
+.item-input-outline .item-title.item-label {
+  left: 0;
+  font-size: 100%;
+}
+
+.block-with-header {
+  padding-top: 80px;
+}
+.item-title span {
+  color: #795548;
+  font-size: 80%;
+}
+.item-after span {
+  font-size: 80%;
+}

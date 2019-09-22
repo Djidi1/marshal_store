@@ -45,14 +45,16 @@ class OrdersPage extends React.Component {
                   onClick={() => this.open_response(order.id)}
                   swipeout
                   after={moment(order.created_at).format("DD.MM.YYYY HH:mm")}
-                  subtitle={order.user.name}
                   text={
-                    (order.in_stock ? "В наличии " : "") +
-                    (order.original ? "Оригинал" : "")
+                    (order.in_stock ? "В наличии" : "На заказ") + " / " +
+                    (order.original ? "Оригинал" : "Не оригинал")
                   }
                 >
                   <span slot="title">
-                    <b>{order.price} Р.</b>
+                    <b>{order.price} ₽</b>
+                  </span>
+                  <span slot="subtitle">
+                    <b>{order.user.name}</b>: {order.description}
                   </span>
                 </ListItem>
               ))

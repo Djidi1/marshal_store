@@ -17,10 +17,16 @@ export class initApplication {
     }
   };
   getDataFromDB = async props => {
-    let get_data = new getData();
-    const userDetails = await get_data
+    const get_data = new getData();
+    get_data
       .data("details")
-      .then(value => value.success || {});
+      .then((data) => {
+        if (data.success) {
+            get_data
+                .data("answers", {params: {shop_id: data.success.shop_id || 0}})
+                .then(value => value !== undefined && props.handleOrders(value));
+        }
+      });
     const shop = get_data
       .data("user-shop")
       .then(value => value !== undefined && props.handleShop(value));
@@ -36,9 +42,6 @@ export class initApplication {
     const carmodels = get_data
       .data("carmodels")
       .then(value => value !== undefined && props.handleCarModels(value));
-    const orders = get_data
-      .data("answers", { params: { shop_id: userDetails.shop_id || 0 } })
-      .then(value => value !== undefined && props.handleOrders(value));
 
     // wait all requests
     await Promise.all([
@@ -47,10 +50,7 @@ export class initApplication {
       requests,
       carbrands,
       carmodels,
-      orders
-    ]).then(function(values) {
-      console.log(values);
-    });
+    ]).then(() => console.log('loaded from DB'));
   };
   getDataFromLS = async props => {
     const shop = get("shop").then(
@@ -80,8 +80,6 @@ export class initApplication {
       carbrands,
       carmodels,
       orders
-    ]).then(function(values) {
-      console.log(values);
-    });
+    ]).then(() => console.log('loaded from LS'));
   };
 }

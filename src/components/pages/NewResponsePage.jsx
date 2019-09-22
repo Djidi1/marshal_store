@@ -8,27 +8,13 @@ import {
     BlockTitle,
     Button,
     ListItem,
-    Toggle,
+    Segmented,
+    Icon,
 } from 'framework7-react';
 import connect from "react-redux/es/connect/connect";
-
 import {setData} from "../../axios/setData";
+import {convertIcon} from "../helpers/helpers"
 
-/*import {
-    handleAddRequests,
-    handleUpdateRequest,
-   // handleDeleteRequest
-} from "../../actions/DataActions";*/
-
-/*
-        'request_id',
-        'status_id',
-        'shop_id',
-        'user_id',
-        'price',
-        'is_new',
-        'description'
- */
 class NewResponsePage extends Component {
     constructor() {
         super();
@@ -38,9 +24,10 @@ class NewResponsePage extends Component {
             shop_id: 0,
             user_id: 0,
             price: '',
-            is_new: true,
+            in_stock: true,
+            original: true,
             description: '',
-            request: {created_at: new Date(), answers_count: 0, status: ''},
+            request: {created_at: new Date(), category: {}, answers_count: 0, status: ''},
         }
     }
 
@@ -55,23 +42,16 @@ class NewResponsePage extends Component {
         set_data.data('answer-add', req_data).then(data => {
             console.log(data.result);
             //this.props.handleAddRequests(data.result);
-            this.addRequestSuccess.open();
+            this.$f7.notification.create({
+                icon: '<i class="icon marshal-icon"> </i>',
+                title: 'Маршал Сервис',
+                subtitle: 'Ответ добавлен',
+                text: 'Спасибо за ваш ответ!',
+                closeTimeout: 3000,
+            }).open();
         });
         this.$f7.views.main.router.navigate('/');
     };
-
-    addRequestSuccess = this.$f7.notification.create({
-        icon: '<i class="icon marshal-icon"> </i>',
-        title: 'Маршал Сервис',
-        subtitle: 'Заявка добавлена',
-        text: 'В ближайшее время вам ответят.',
-        closeTimeout: 3000,
-    });
-
-    get_category(cat_id) {
-        const cat = this.props.categories.find(x => x.id === cat_id);
-        return cat !== undefined ? cat.category : "Без категории"
-    }
 
     componentDidMount() {
         const initData = {};
@@ -88,7 +68,7 @@ class NewResponsePage extends Component {
     }
 
     render() {
-        const {price, description, is_new, request} = this.state;
+        const {price, description, in_stock, original, request} = this.state;
 
         return (
             <Page>
@@ -108,32 +88,56 @@ class NewResponsePage extends Component {
                         swipeout
                         after={request.created_at.toLocaleString()}
                         subtitle={`Ответов: ${request.answers_count || 0}`}
-                        text={request.text}
+                        text={request.text || '-'}
                     >
                         <span slot="title">
-                            {/*<Icon className={"status-icon"} material="access_time" color="blue"/>*/}
-                            [{request.status.status}] {this.get_category(request.category_id)}
+                            {
+                                request.category !== null &&
+                                <Icon
+                                    icon='sub-title'
+                                    style={{background: convertIcon(request.category.icon)}}
+                                />
+                            }
+                            [{request.status.status}]
                         </span>
                     </ListItem>
                 </List>
-                <List
-                    className={"list-with-header"}>
-                    <ListItem>
-                        <BlockTitle
-                            style={{whiteSpace: 'initial'}}
-                        >Здесь вы можете ответить на заявку покупателя.</BlockTitle>
-                    </ListItem>
-                    <ListItem>
-                        <span>Товар новый</span>
-                        <Toggle defaultChecked={is_new}
-                                onChange={() => this.handleData('is_new', !is_new)}
-                        />
-                    </ListItem>
+                <div className={"block-with-header"}>
+                    <BlockTitle
+                        style={{whiteSpace: 'initial'}}
+                    >Здесь вы можете ответить на заявку покупателя.</BlockTitle>
+                    <Block>
+                        <Segmented raised tag="p" className="width-100">
+                            <Button outline
+                                    onClick={() => this.handleData('original', false)}
+                                    active={!original}
+                                    color="blue"
+                            >На заказ</Button>
+                            <Button outline
+                                    onClick={() => this.handleData('original', true)}
+                                    active={original}
+                                    color="blue"
+                            >В наличии</Button>
+                        </Segmented>
+                        <Segmented raised tag="p" className="width-100">
+                            <Button
+                                outline
+                                onClick={() => this.handleData('in_stock', false)}
+                                active={!in_stock}
+                            >Не оригинал</Button>
+                            <Button
+                                outline
+                                onClick={() => this.handleData('in_stock', true)}
+                                active={in_stock}
+                            >Оригинал</Button>
+                        </Segmented>
+                    </Block>
+                </div>
+                <List className={"no-margin no-hairline"}>
                     <ListInput
                         outline
                         label="Цена"
-                        floatingLabel
-                        type="text"
+                        type="number"
                         placeholder="Стоимость товара/услуги"
                         value={price}
                         onChange={(event) => this.handleData('price', event.target.value)}
@@ -141,7 +145,6 @@ class NewResponsePage extends Component {
                     <ListInput
                         outline
                         label="Описание"
-                        floatingLabel
                         type="textarea"
                         placeholder="Дополнительная информация о товаре/предложении..."
                         value={description}
