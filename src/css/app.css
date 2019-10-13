@@ -13,6 +13,9 @@
   --f7-message-footer-font-size: 10px;
   --f7-toolbar-link-color: #cb2128;
 }
+.statusbar {
+  background: #cb2128;
+}
 
 /*cb2128 */
 i.icon.marshal-icon {
@@ -135,7 +138,7 @@ span.categories-list {
 }
 
 #requests .page {
-  padding-top: 160px;
+  top: 140px;
   padding-bottom: 60px;
 }
 
@@ -187,4 +190,32 @@ i.icon.fav-icon {
 }
 .item-after span {
   font-size: 80%;
+}
+.sheet-modal-inner .page-content {
+  overflow: hidden;
+}
+.display-flex .chip, .display-flex span {
+  font-weight: bold;
+  flex: 1 1 0;
+  margin: 12px 3px;
+  text-align: center;
+}
+
+.display-flex span.flex-direction-column {
+  margin-bottom: -20px;
+}
+.filter-title {
+  font-weight: bold;
+  top: 6px;
+  left: 12px;
+  position: relative;
+}
+
+.car-brands {
+  width: 50%;
+  right: 0;
+  top: 0;
+  text-align: right;
+  font-weight: bold;
+  position: absolute;
 }

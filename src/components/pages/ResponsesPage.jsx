@@ -118,6 +118,11 @@ class ResponsesPage extends Component {
                     ) : null}
                     {item.price} ₽
                   </b>
+                    <span className="car-brands" slot="text">
+                      {item.reserve_date
+                          ? `В резерве до ${item.reserve_date.toLocaleString().slice(0,10)}`
+                          : null}
+                    </span>
                 </ListItem>
               );
             })

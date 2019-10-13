@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import {
   Page,
   Messages,
-  // MessagesTitle,
   Messagebar,
   Link,
   Message,
@@ -16,14 +15,14 @@ import {
   List,
   ListItem,
   Navbar,
-  Subnavbar
-  // NavRight
+  Subnavbar,
+  Button,
 } from "framework7-react";
 import { Detector } from "react-detect-offline";
 import { getData } from "../../axios/getData";
 import { setData } from "../../axios/setData";
 import { get } from "idb-keyval";
-import { handleResponse } from "../../actions/DataActions";
+import { handleRequest, handleResponse } from "../../actions/DataActions";
 
 const _ = require("lodash/core");
 
@@ -121,6 +120,16 @@ class respMessages extends React.Component {
           title="Предложение"
           backLink="Back"
         >
+            <div className="right">
+                <Button
+                    className="margin-horizontal-half"
+                    fill
+                    color="orange"
+                    onClick={() => this.addToReserve(response.id)}
+                >
+                    В резерв
+                </Button>
+            </div>
           <Subnavbar inner={false} className={"no-margin"}>
             <List mediaList className={"no-margin list-title"}>
               <ListItem
@@ -140,6 +149,11 @@ class respMessages extends React.Component {
                   ) : null}
                   {response.price}
                 </b>
+                  <span className="car-brands" slot="text">
+                    {response.reserve_date
+                      ? `В резерве до ${response.reserve_date.toLocaleString().slice(0, 10)}`
+                      : null}
+                    </span>
               </ListItem>
             </List>
           </Subnavbar>
@@ -265,6 +279,28 @@ class respMessages extends React.Component {
       ? "Добавьте сообщение или отправьте"
       : "Сообщение";
   }
+
+    addToReserve = (answerId) => {
+        const {request, handleRequest} = this.props;
+        const set_data = new setData();
+        const get_data = new getData();
+        if (answerId > 0) {
+            const date = new Date();
+            date.setDate(date.getDate() + 3);
+            const payload = {reserve_date: date.toISOString().split('T')[0]};
+            set_data.dataPut('answer-update/' + answerId, payload).then(async () => {
+                await get_data.data('request/' + request.id).then(value => value !== undefined && handleRequest(value));
+                this.addFSSuccess.open();
+            });
+        }
+        return true;
+    };
+    addFSSuccess = this.$f7.notification.create({
+        icon: '<i class="icon marshal-icon"> </i>',
+        title: 'Маршал Сервис',
+        subtitle: 'Заказ добавлен в резерв на 3 дня',
+        closeTimeout: 3000,
+    });
   get_shop(shop_id) {
     const shop = this.props.shops.find(x => x.id === shop_id);
     return shop !== undefined ? shop.name : "Без категории";
@@ -451,6 +487,7 @@ class respMessages extends React.Component {
 
 const mapStateToProps = store => {
   return {
+    request: store.request[0],
     response: store.response[0],
     shop: store.stores.shop,
     user: store.user
@@ -459,6 +496,7 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    handleRequest: request => dispatch(handleRequest(request)),
     handleResponse: request => dispatch(handleResponse(request))
   };
 };

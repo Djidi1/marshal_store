@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {getData} from "../../axios/getData";
 import {handleRequest, handleRequests} from "../../actions/DataActions";
 import {convertIcon} from "../helpers/helpers"
+import StoreSelect from "../elements/StoreSelect"
 
 import moment from "moment";
 
@@ -14,9 +15,7 @@ import {
     SwipeoutActions,
     SwipeoutButton,
     Icon,
-    Link,
     Block,
-    Toolbar,
     Page,
 } from "framework7-react";
 
@@ -96,7 +95,7 @@ class RequestsPage extends React.Component {
                 &&
                 (
                     (x.car !== null && x.car.car_brand_id === brand_id)
-                    || x.car === null
+                    //|| x.car === null
                     || brand_id === 0
                 )
         });
@@ -107,50 +106,13 @@ class RequestsPage extends React.Component {
                 {/*запчастей.*/}
                 {/*</BlockTitle>*/}
 
-                <Toolbar themeDark tabbar scrollable position='top'>
-                    <Link
-                        key={0}
-                        tabLinkActive={0 === brand_id}
-                        onClick={() => this.handleBrand(0)}
-                    >ВСЕ</Link>
-                    {carbrands.map((brand) => (
-                        <Link
-                            key={brand.id}
-                            tabLinkActive={brand.id === brand_id}
-                            onClick={() => this.handleBrand(brand.id)}
-                        >{brand.car_brand}</Link>
-                    ))}
-                </Toolbar>
-                <Toolbar tabbar labels scrollable position='top'>
-                    <Link
-                        key={0}
-                        tabLinkActive={0 === category_id}
-                        onClick={() => this.handleCategory(0)}
-                    >
-                        <Icon
-                            icon='category-icon'
-                            style={{background: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z' fill='%23cb2128'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E\") no-repeat 50% 50%"}}
-                        />
-                        <span className='tabbar-label'>ВСЕ</span>
-                    </Link>
-                    {categories.sort((a, b) => {
-                        return a.category < b.category ? -1 : 1
-                    })
-                        .map((cat) => {
-                                return <Link
-                                    key={cat.id}
-                                    tabLinkActive={cat.id === category_id}
-                                    onClick={() => this.handleCategory(cat.id)}
-                                >
-                                    <Icon
-                                        icon='category-icon'
-                                        style={{background: convertIcon(cat.icon)}}
-                                    />
-                                    <span className='tabbar-label'>{cat.category}</span>
-                                </Link>
-                            }
-                        )}
-                </Toolbar>
+
+                <StoreSelect
+                    carbrands={carbrands}
+                    handleBrand={this.handleBrand}
+                    categories={categories}
+                    handleCategory={this.handleCategory}
+                />
                 {/*
                 <List noHairlinesMd>
                     <ListInput
