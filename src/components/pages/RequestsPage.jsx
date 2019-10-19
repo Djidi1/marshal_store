@@ -100,7 +100,7 @@ class RequestsPage extends React.Component {
                 )
         });
         return (
-            <React.Fragment>
+            <>
                 {/*<BlockTitle style={{ whiteSpace: "initial" }}>*/}
                 {/*Здесь отображаются заявки от покупателей на подбор автотоваров или*/}
                 {/*запчастей.*/}
@@ -171,7 +171,7 @@ class RequestsPage extends React.Component {
                         )}
                     </List>
                 </Page>
-            </React.Fragment>
+            </>
         );
     }
 }
