@@ -225,8 +225,11 @@ i.icon.fav-icon {
   -moz-appearance: none;
   appearance: none;
   font-weight: bold;
-  padding: 7px 0;
+  padding: 16px 0;
   text-align-last: center;
+}
+#requests .chip {
+  height: 46px;
 }
 .chip .input-dropdown::before, .chip .input-dropdown::after {
   display: none !important;
