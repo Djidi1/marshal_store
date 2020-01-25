@@ -32,7 +32,7 @@ class HomePage extends React.Component {
     super();
     this.state = {
       title: "Заявки",
-      loaded: false
+      loaded: false,
     };
   }
 
@@ -42,6 +42,9 @@ class HomePage extends React.Component {
       const initApp = new initApplication();
       await initApp.init(this.props);
       this.setState({ loaded: true });
+      if (this.props.user.id === 0) {
+          this.$f7.views.main.router.navigate('/login/');
+      }
       this.$f7.dialog.close();
     }
   }

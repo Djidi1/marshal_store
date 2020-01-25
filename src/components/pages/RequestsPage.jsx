@@ -42,6 +42,13 @@ const getRequests = async (props, dateFrom, dateTo) => {
         .then(value => value !== undefined && props.handleRequests(value));
 };
 
+const getAllRequests = async (props) => {
+    let get_data = new getData();
+    await get_data
+        .data("requests")
+        .then(value => value !== undefined && props.handleRequests(value));
+};
+
 class RequestsPage extends React.Component {
     constructor(props) {
         super(props);
@@ -74,6 +81,14 @@ class RequestsPage extends React.Component {
         });
         getRequests(this.props, this.state.dateFrom, this.state.dateTo).then(() => {
             this.$f7.dialog.close();
+        });
+    };
+
+    handleReloadRequests = (event) => {
+        this.$f7.dialog.preloader("Обновляем список заявок...");
+        getAllRequests(this.props).then(() => {
+            this.$f7.dialog.close();
+            event.detail();
         });
     };
 
@@ -125,7 +140,11 @@ class RequestsPage extends React.Component {
                     />
                 </List>
                 */}
-                <Page pageContent>
+                <Page
+                    pageContent
+                    ptr
+                    onPtrRefresh={this.handleReloadRequests}
+                >
                     <List mediaList className={"no-margin"}>
                         {filtered_requests.length === 0 ? (
                             <Block>Нет открытых заявок в данной категории...</Block>

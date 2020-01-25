@@ -21,7 +21,7 @@ export class initApplication {
     get_data
       .data("details")
       .then((data) => {
-        if (data.success) {
+        if (data !== undefined && data.success) {
             get_data
                 .data("answers", {params: {shop_id: data.success.shop_id || 0}})
                 .then(value => value !== undefined && props.handleOrders(value));

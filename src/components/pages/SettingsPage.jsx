@@ -70,10 +70,10 @@ class SettingsPage extends React.Component {
                             <ListItem
                                 button
                                 link="login/"
-                                subtitle="После регистрации станут доступны дополнительные возможности"
+                                subtitle="Для доступа к заказам вам необходимо войти"
                             >
                                 <span slot="title">
-                                    <Icon className={"status-icon"} material="account_circle" color="main"/> Вход
+                                    <Icon className={"status-icon"} material="account_circle" color="main"/> Вход / Регистрация
                                 </span>
                             </ListItem>
                         </List>

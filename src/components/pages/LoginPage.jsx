@@ -6,8 +6,10 @@ import {
     ListInput,
     Button,
     BlockFooter,
-    Link,
-    LoginScreenTitle, Navbar
+    // Link,
+    LoginScreenTitle,
+    Navbar,
+    BlockTitle,
 } from 'framework7-react';
 
 import { authorisation } from '../../axios/login'
@@ -58,20 +60,26 @@ class LoginPage extends React.Component {
         this.props.handleLogin(response.data.success);
     }
     render() {
-
         const { inputLogin, inputPassword} = this.state;
+        const { user } = this.props;
+        const unregistered = user.id === 0;
 
         return (
             <Page loginScreen>
                 <Navbar
                     title=""
-                    backLink="Back"
+                    backLink={unregistered ? false : "Back"}
                     color="white"
                     textColor="white"
                     bgColor="main"
                 />
                 <LoginScreenTitle>Войти</LoginScreenTitle>
                 <List form>
+                    <BlockTitle
+                        className="padding-horizontal"
+                    >
+                        Для доступа к заказам вам необходимо войти
+                    </BlockTitle>
                     <ListInput
                         label="Email"
                         name="username"
@@ -96,7 +104,7 @@ class LoginPage extends React.Component {
 
                 <List>
                     <BlockFooter>
-                        <p><Link href={'/register_user/'}>Зарегистрироваться</Link></p>
+                        {/*<p><Link href={'/register_user/'}>Зарегистрироваться</Link></p>*/}
                         {/*<p>Для восстановления пароля нажмите <Link>ссылку</Link></p>*/}
                     </BlockFooter>
                 </List>
