@@ -24,7 +24,7 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=4000 react-scripts start",
     "build": "react-scripts build && rm -R ../marshal_app_store/www/* && cp -R build/* ../marshal_app_store/www/ && cd ../marshal_app_store && cordova build ios",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",

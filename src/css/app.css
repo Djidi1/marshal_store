@@ -213,13 +213,19 @@ i.icon.fav-icon {
 }
 
 .car-brands {
-  width: 50%;
-  right: 0;
-  top: 0;
-  text-align: right;
+  font-size: 10px;
+  color: #673AB7;
   font-weight: bold;
-  position: absolute;
+  float: right;
+  margin-left: 8px;
 }
+.goods-description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
 .chip .input-dropdown select {
   -webkit-appearance: none;
   -moz-appearance: none;

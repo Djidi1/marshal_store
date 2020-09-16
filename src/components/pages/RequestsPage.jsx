@@ -103,17 +103,10 @@ class RequestsPage extends React.Component {
         const {requests, categories, carbrands} = this.props;
         const {category_id, brand_id} = this.state;
         const filtered_requests = requests.filter(x => {
-            return (
-                x.category_id === category_id
-                || category_id === 0
-                )
+            return (x.category_id === category_id || category_id === 0)
                 &&
-                (
-                    (x.car !== null && x.car.car_brand_id === brand_id)
-                    //|| x.car === null
-                    || brand_id === 0
-                )
-        });
+                ((x.car !== null && x.car.car_brand_id === brand_id) || brand_id === 0)
+        }).sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
         return (
             <>
                 {/*<BlockTitle style={{ whiteSpace: "initial" }}>*/}

@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, {Component} from "react";
+import {connect} from "react-redux";
 
-import { Detector } from "react-detect-offline";
-import { getData } from "../../axios/getData";
-import { handleResponse } from "../../actions/DataActions";
-import { get } from "idb-keyval";
+import {Detector} from "react-detect-offline";
+import {getData} from "../../axios/getData";
+import {handleResponse} from "../../actions/DataActions";
+import {get} from "idb-keyval";
 
 import {
   Page,
@@ -56,7 +56,7 @@ class ResponsesPage extends Component {
   }
 
   render() {
-    const { request } = this.props;
+    const {request} = this.props;
     return (
       <Page>
         <Navbar
@@ -84,11 +84,11 @@ class ResponsesPage extends Component {
           >
             <span slot="title">
               {
-                  request.category !== null &&
-                  <Icon
-                      icon='sub-title'
-                      style={{background: convertIcon(request.category.icon)}}
-                  />
+                request.category !== null &&
+                <Icon
+                  icon='sub-title'
+                  style={{background: convertIcon(request.category.icon)}}
+                />
               }
               [{request.status.status}]
             </span>
@@ -106,7 +106,6 @@ class ResponsesPage extends Component {
                   onClick={() => this.open_response(item.id)}
                   after={item.created_at.toLocaleString()}
                   subtitle={item.user.name}
-                  text={item.description}
                 >
                   <b slot="title">
                     {item.is_new ? (
@@ -118,11 +117,16 @@ class ResponsesPage extends Component {
                     ) : null}
                     {item.price} ₽
                   </b>
-                    <span className="car-brands" slot="text">
-                      {item.reserve_date
-                          ? `В резерве до ${item.reserve_date.toLocaleString().slice(0,10)}`
-                          : null}
-                    </span>
+                  <div className="goods-description" slot="text">
+                    {item.reserve_date
+                      ? (
+                        <span className="car-brands">
+                          В резерве до {item.reserve_date.toLocaleString().slice(0, 10)}
+                        </span>
+                      )
+                      : null}
+                    {item.description}
+                  </div>
                 </ListItem>
               );
             })

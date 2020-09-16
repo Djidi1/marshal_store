@@ -7,7 +7,8 @@ import {
   ListItem,
   Block,
   BlockTitle,
-  Button
+  Button,
+  Toggle,
 } from "framework7-react";
 import connect from "react-redux/es/connect/connect";
 import { handleLogin } from "../../actions/UserActions";
@@ -50,6 +51,12 @@ class EditStorePage extends Component {
       carBrands: [...event.target.options]
         .filter(o => o.selected)
         .map(o => o.value)
+    });
+  };
+  carBrandsAllHandler = () => {
+    const { carbrands } = this.props;
+    this.setState({
+      carBrands: carbrands.length === this.state.carBrands.length ? [] : carbrands.map(o => o.id)
     });
   };
 
@@ -126,9 +133,9 @@ class EditStorePage extends Component {
     const {
       name,
       description,
-      address,
+      // address,
       phone,
-      comment,
+      // comment,
       area,
       section
     } = this.state;
@@ -162,9 +169,8 @@ class EditStorePage extends Component {
               })}
             </select>
           </ListItem>
-
           <ListItem
-            title="Автомобили"
+            title="Марки автомобилей"
             smartSelect
             smartSelectParams={{
               openIn: "popup",
@@ -187,6 +193,18 @@ class EditStorePage extends Component {
               })}
             </select>
           </ListItem>
+          <li>
+            <ul>
+              <ListItem title="Все марки">
+                <Toggle
+                  slot="after"
+                  checked={carbrands.length === this.state.carBrands.length}
+                  onChange={this.carBrandsAllHandler}
+                />
+              </ListItem>
+            </ul>
+          </li>
+          <ListItem style={{height: 1}} divider />
           <ListInput
             label="Название магазина"
             floatingLabel
@@ -205,14 +223,14 @@ class EditStorePage extends Component {
               this.handleData("description", event.target.value)
             }
           />
-          <ListInput
+          {/*<ListInput
             label="Адрес"
             floatingLabel
             type="text"
             placeholder="Точка продаж"
             value={address}
             onChange={event => this.handleData("address", event.target.value)}
-          />
+          />*/}
           <ListInput
             label="Телефон"
             floatingLabel
@@ -221,22 +239,24 @@ class EditStorePage extends Component {
             value={phone}
             onChange={event => this.handleData("phone", event.target.value)}
           />
-          <ListInput
+          {/*<ListInput
             label="Комментарий"
             floatingLabel
             type="text"
             placeholder="Дополнительный комментарий (для себя)"
             value={comment}
             onChange={event => this.handleData("comment", event.target.value)}
-          />
+          />*/}
           <ListInput
-            label="Область"
-            floatingLabel
-            type="text"
-            placeholder="АЦ"
+            label="АЦ Маршал"
+            type="select"
             value={area}
+            placeholder="Выберите..."
             onChange={event => this.handleData("area", event.target.value)}
-          />
+          >
+            <option value="Север">Север</option>
+            <option value="Юг">Юг</option>
+          </ListInput>
           <ListInput
             label="Секция"
             floatingLabel

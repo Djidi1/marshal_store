@@ -134,10 +134,8 @@ class respMessages extends React.Component {
             <List mediaList className={"no-margin list-title"}>
               <ListItem
                 key={response.id}
-                //onClick={() => this.open_response(response.id)}
                 after={response.created_at.toLocaleString()}
                 subtitle={response.user.name}
-                text={response.description}
               >
                 <b slot="title">
                   {response.is_new ? (
@@ -149,11 +147,16 @@ class respMessages extends React.Component {
                   ) : null}
                   {response.price}
                 </b>
-                  <span className="car-brands" slot="text">
-                    {response.reserve_date
-                      ? `В резерве до ${response.reserve_date.toLocaleString().slice(0, 10)}`
-                      : null}
-                    </span>
+                <div className="goods-description" slot="text">
+                  {response.reserve_date
+                    ? (
+                      <span className="car-brands">
+                          В резерве до {response.reserve_date.toLocaleString().slice(0, 10)}
+                        </span>
+                    )
+                    : null}
+                  {response.description}
+                </div>
               </ListItem>
             </List>
           </Subnavbar>
@@ -286,7 +289,7 @@ class respMessages extends React.Component {
         const get_data = new getData();
         if (answerId > 0) {
             const date = new Date();
-            date.setDate(date.getDate() + 3);
+            date.setDate(date.getDate() + 2);
             const payload = {reserve_date: date.toISOString().split('T')[0]};
             set_data.dataPut('answer-update/' + answerId, payload).then(async () => {
                 await get_data.data('request/' + request.id).then(value => value !== undefined && handleRequest(value));
@@ -298,7 +301,7 @@ class respMessages extends React.Component {
     addFSSuccess = this.$f7.notification.create({
         icon: '<i class="icon marshal-icon"> </i>',
         title: 'Маршал Сервис',
-        subtitle: 'Заказ добавлен в резерв на 3 дня',
+        subtitle: 'Заказ добавлен в резерв на 48 часов',
         closeTimeout: 3000,
     });
   get_shop(shop_id) {
