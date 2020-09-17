@@ -54,7 +54,7 @@ class OrdersPage extends React.Component {
                     <b>{order.price} ₽</b>
                   </span>
                   <span slot="subtitle">
-                    <b>{order.user.name}</b>: {order.description}
+                    <b>{order?.user?.name}</b>: {order.description}
                   </span>
                 </ListItem>
               ))
