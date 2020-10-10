@@ -106,7 +106,7 @@ class RequestsPage extends React.Component {
             return (x.category_id === category_id || category_id === 0)
                 &&
                 ((x.car !== null && x.car.car_brand_id === brand_id) || brand_id === 0)
-        }).sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+        });
         return (
             <>
                 {/*<BlockTitle style={{ whiteSpace: "initial" }}>*/}

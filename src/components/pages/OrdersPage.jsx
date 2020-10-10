@@ -5,6 +5,7 @@ import { Detector } from "react-detect-offline";
 import { getData } from "../../axios/getData";
 import { handleResponse } from "../../actions/DataActions";
 import { get } from "idb-keyval";
+import _get from "lodash/get"
 import moment from "moment";
 
 const getResponse = async (props, resp_id) => {
@@ -33,31 +34,36 @@ class OrdersPage extends React.Component {
   }
 
   render() {
-    const { orders } = this.props;
+    const { requestsStore, shop_id } = this.props;
+    const requests = [...requestsStore]
+      .filter(req => req.answers.some(answer => answer.shop_id === shop_id));
     return (
       <React.Fragment>
         <BlockTitle>Здесь будут запросы на которые вы ответили.</BlockTitle>
         <List mediaList className={"list-title"}>
-          {orders.length > 0
-            ? orders.map(order => (
+          {requests.length > 0
+            ? requests.map(request => {
+              const answer = _get(request, 'answers[0]', {});
+              return (
                 <ListItem
-                  key={"order-" + order.id}
-                  onClick={() => this.open_response(order.id)}
+                  key={"answer-" + answer.id}
+                  onClick={() => this.open_response(answer.id)}
                   swipeout
-                  after={moment(order.created_at).format("DD.MM.YYYY HH:mm")}
+                  after={moment(answer.created_at).format("DD.MM.YYYY HH:mm")}
                   text={
-                    (order.in_stock ? "В наличии" : "На заказ") + " / " +
-                    (order.original ? "Оригинал" : "Не оригинал")
+                    (answer.in_stock ? "В наличии" : "На заказ") + " / " +
+                    (answer.original ? "Оригинал" : "Не оригинал")
                   }
                 >
                   <span slot="title">
-                    <b>{order.price} ₽</b>
+                      <b>{answer.price} ₽</b>
                   </span>
                   <span slot="subtitle">
-                    <b>{order?.user?.name}</b>: {order.description}
+                    <b>{_get(request, 'user.name', '')}</b>: {request.text}
                   </span>
                 </ListItem>
-              ))
+              )
+            })
             : ""}
         </List>
       </React.Fragment>
@@ -65,11 +71,12 @@ class OrdersPage extends React.Component {
   }
 }
 
-const mapStateToProps = store => {
+const mapStateToProps = ({requests, user}) => {
   return {
-    orders: store.orders.orders
+    requestsStore: requests,
+    shop_id: user.shop_id
   };
-};
+}
 
 const mapDispatchToProps = dispatch => {
   return {
