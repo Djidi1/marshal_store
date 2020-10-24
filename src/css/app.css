@@ -243,3 +243,7 @@ i.icon.fav-icon {
 .chip .input-dropdown select::-ms-expand {
   display: none;
 }
+
+.hide {
+  display: none !important;
+}

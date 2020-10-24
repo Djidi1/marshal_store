@@ -120,7 +120,7 @@ class respMessages extends React.Component {
           title="Предложение"
           backLink="Back"
         >
-            <div className="right">
+            <div className="right hide">
                 <Button
                     className="margin-horizontal-half"
                     fill

@@ -143,7 +143,9 @@ class RequestsPage extends React.Component {
                             <Block>Нет открытых заявок в данной категории...</Block>
                         ) : (
                             filtered_requests.map(item => {
-                                return (
+                                // do not show reserved in main list
+                                const isReserved = item.answers.some(x => !!x.reserve_date);
+                                return !isReserved && (
                                     <ListItem
                                         key={item.id}
                                         swipeout

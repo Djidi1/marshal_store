@@ -50,10 +50,6 @@ class OrdersPage extends React.Component {
                   onClick={() => this.open_response(answer.id)}
                   swipeout
                   after={moment(answer.created_at).format("DD.MM.YYYY HH:mm")}
-                  text={
-                    (answer.in_stock ? "В наличии" : "На заказ") + " / " +
-                    (answer.original ? "Оригинал" : "Не оригинал")
-                  }
                 >
                   <span slot="title">
                       <b>{answer.price} ₽</b>
@@ -61,6 +57,11 @@ class OrdersPage extends React.Component {
                   <span slot="subtitle">
                     <b>{_get(request, 'user.name', '')}</b>: {request.text}
                   </span>
+                  <div slot="text" className="width-100">
+                    {(answer.in_stock ? "В наличии" : "На заказ") + " / " +
+                    (answer.original ? "Оригинал" : "Не оригинал")}
+                    {answer.reserve_date && <span className="car-brands">В резерве до {answer.reserve_date.toLocaleString().slice(0, 10)}</span>}
+                  </div>
                 </ListItem>
               )
             })
