@@ -105,12 +105,12 @@ class respMessages extends React.Component {
   onDrop(pictureFiles, pictureDataURLs) {
     this.setState({
       images: pictureDataURLs
-      // images: this.state.images.concat(pictureDataURLs),
     });
   }
 
   render() {
-    const { response } = this.props;
+    const { response, requests } = this.props;
+    const request = requests.find(x => x.id === response.request_id) || {};
     return (
       <Page className={"messages-block"}>
         <Navbar
@@ -148,6 +148,7 @@ class respMessages extends React.Component {
                   {response.price}
                 </b>
                 <div className="goods-description" slot="text">
+                  <div className="vin"><b>VIN:</b> {request?.vin}</div>
                   {response.reserve_date
                     ? (
                       <span className="car-brands">
@@ -491,6 +492,7 @@ class respMessages extends React.Component {
 const mapStateToProps = store => {
   return {
     request: store.request[0],
+    requests: store.requests,
     response: store.response[0],
     shop: store.stores.shop,
     user: store.user

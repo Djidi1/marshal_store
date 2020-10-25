@@ -61,6 +61,7 @@ class OrdersPage extends React.Component {
                     {(answer.in_stock ? "В наличии" : "На заказ") + " / " +
                     (answer.original ? "Оригинал" : "Не оригинал")}
                     {answer.reserve_date && <span className="car-brands">В резерве до {answer.reserve_date.toLocaleString().slice(0, 10)}</span>}
+                    <div className="vin"><b>VIN:</b> {request.vin}</div>
                   </div>
                 </ListItem>
               )

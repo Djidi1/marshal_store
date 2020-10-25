@@ -247,3 +247,11 @@ i.icon.fav-icon {
 .hide {
   display: none !important;
 }
+.vin {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0 4px;
+}
+.item-text {
+  padding-bottom: 4px;
+}
